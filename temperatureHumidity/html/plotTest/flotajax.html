@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta name="generator" content=
+    "HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org">
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <title>
+      Flot Examples
+    </title>
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
+
+    <script language="javascript" type="text/javascript" src=
+    "../../../../lib/flot/jquery.js">
+</script>
+    <script language="javascript" type="text/javascript" src=
+    "../../../../lib/flot/jquery.flot.js">
+</script>
+  </head>
+  <body>
+    <div id="placeholder" style="width:600px;height:300px;"></div>
+    <p>
+      <input class="fetchSeries" type="button" value="data-eu-gdp-growth.json">
+    </p>
+    <p>
+      <input class="fetchSeries2" type="button" value="temperature.json">
+    </p>
+    <p>
+      <input class="fetchSeries3" type="button" value="humidity.json">
+    </p>
+    <p>
+      <a href="temperature.json">temperature.json</a>
+    </p>
+    <p>
+      <a href="humidity.json">humidity.json</a>
+    </p>
+
+
+
+
+
+<script type="text/javascript">
+$(function () {
+    var options = {
+        lines: { show: true },
+        points: { show: true },
+        xaxis: { tickDecimals: 0, tickSize: 1 }
+    };
+    var data = [];
+    var placeholder = $("#placeholder");
+
+    $.plot(placeholder, data, options);
+
+    $("input.fetchSeries").click(function () {
+        var button = $(this);
+        
+        // find the URL in the link right next to us 
+        var dataurl = "data-eu-gdp-growth.json"
+
+        // then fetch the data with jQuery
+        function onDataReceived(series) {
+
+                data.push(series);
+            
+            // and plot all we got
+            $.plot(placeholder, data, options);
+         }
+        
+        $.ajax({
+            url: dataurl,
+            method: 'GET',
+            dataType: 'json',
+            success: onDataReceived
+        });
+    });
+
+    $("input.fetchSeries2").click(function () {
+        var button = $(this);
+        
+        // find the URL in the link right next to us 
+        //var dataurl = "data-eu-gdp-growth.json"
+        //var dataurl = "humidity.json"
+        var dataurl = "temperature.json"
+
+        // then fetch the data with jQuery
+        function onDataReceived(series) {
+
+                data.push(series);
+            
+            // and plot all we got
+            $.plot(placeholder, data, options);
+         }
+        
+        $.ajax({
+            url: dataurl,
+            method: 'GET',
+            dataType: 'json',
+            success: onDataReceived
+        });
+    });
+
+    $("input.fetchSeries3").click(function () {
+        var button = $(this);
+        
+        // find the URL in the link right next to us 
+        //var dataurl = "data-eu-gdp-growth.json"
+        var dataurl = "humidity.json"
+
+        // then fetch the data with jQuery
+        function onDataReceived(series) {
+
+                data.push(series);
+            
+            // and plot all we got
+            $.plot(placeholder, data, options);
+         }
+        
+        $.ajax({
+            url: dataurl,
+            method: 'GET',
+            dataType: 'json',
+            success: onDataReceived
+        });
+    });
+
+
+
+
+
+
+    });
+    </script>
+  </body>
+</html>

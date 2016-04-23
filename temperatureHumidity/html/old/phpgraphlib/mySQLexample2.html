@@ -1,0 +1,62 @@
+<html>
+
+<head>
+
+
+<script type="text/javascript">
+	//          
+	var plot1;
+	var plotJ;
+	var nowTime;
+
+	function onload_function() {
+		refreshIt(); // refresh every x secs
+	}
+
+	function refreshIt() {
+		//printMessage("timer event");
+
+		nowTime = new Date();
+		var h = nowTime.getHours();
+		var m = nowTime.getMinutes();
+		var s = nowTime.getSeconds();
+		document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+
+		refreshImage();
+		
+		setTimeout('refreshIt()', 1000); // refresh every 5 secs
+	}
+
+	function refreshImage() {
+		img = document.getElementById("cam");
+		img.src = "mySQLexample2.php";
+	}
+</script>
+</head>
+
+
+
+
+
+
+
+<body onload=" onload_function()"
+	style="color: rgb(0, 0, 0); background-color: rgb(51, 102, 102);"
+	link="#0000EE" vlink="#551A8B" alink="#EE0000">
+
+	Time:
+	<font size="-1"> <textarea rows="1" cols="10" id="time"></textarea>
+
+
+		<h3>This is where I want to display my graph</h3> <br> <img
+		src="mySQLexample2.php" id=cam />
+</body>
+
+
+
+
+</html>
+
+
+
+

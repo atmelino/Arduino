@@ -1,0 +1,35 @@
+
+
+Design considerations.
+======================
+
+
+The original design uses Javascript.
+
+the data are now stored in a MySQL database.
+
+The plot webpage can already read data from the database.
+(JQuery, jqplot)
+
+PHP is needed to issue MySQL commands.
+
+
+
+How to acquire data from the sensors or simulate data?
+The problem is that the loop has to run, regardless of which web page is
+currently viewed by the user.
+This means that there has to be a server side script that runs, in addition to the 
+web site.
+
+How should the web site communicate with the script: We need commands such as
+- start data acquisition
+- stop data acquisition
+- start simulation
+- stop simulation
+- selct IP address of sensor
+
+The script needs to be able to store data in the MySQL database 
+and communicate with the sensors through ethernet.
+
+
+

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Temperature and Humidity Sensor Network</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <script type="text/javascript" src="../../lib/jqplot/jquery.js"></script>
+  <style type='text/css'>  </style>
+  <link rel="stylesheet" type="text/css" href="../../lib/jqplot/jquery.jqplot.css" />
+
+<script type="text/javascript" src="../../lib/jqplot/jquery.jqplot.js"></script>
+<script type="text/javascript" src="../../lib/jqplot/plugins/jqplot.barRenderer.js"></script>
+<script type="text/javascript" src="../../lib/jqplot/plugins/jqplot.categoryAxisRenderer.js"></script>
+<script type='text/javascript'>//<![CDATA[ 
+$(window).load(function(){
+$(document).ready(function() {
+    var plot1 = $.jqplot('chart1', [new Array(1)], {
+        title: 'Live Random Data',
+        series: [
+            {
+            yaxis: 'y2axis',
+            label: '',
+            showMarker: false,
+            fill: false,
+            neighborThreshold: 3,
+            lineWidth: 2.2,
+            color: '#0571B6',
+            fillAndStroke: true}
+        ],
+        axes: {
+            xaxis: {
+                renderer: $.jqplot.DateAxisRenderer,
+                tickOptions: {
+                    formatString: '%H:%M:%S'
+                },
+                numberTicks: 10
+            },
+            y2axis: {
+                min: 100,
+                max: 150,
+                tickOptions: {
+                    formatString: '%.2f'
+                },
+                numberTicks: 15
+            }
+        },
+        cursor: {
+            zoom: false,
+            showTooltip: false,
+            show: false
+        },
+        highlighter: {
+            useAxesFormatters: false,
+            showMarker: false,
+            show: false
+        },
+        grid: {
+            gridLineColor: '#333333',
+            background: 'transparent',
+            borderWidth: 3
+        }
+    });
+
+    var myData = [];
+    var x = (new Date()).getTime() - 101000;
+    var y;
+    var i;
+    for ( i = 0; i < 100; i++) {
+        x += 1000;
+        y = Math.floor(Math.random() * 100);
+        myData.push([x, y]);
+    }
+
+    plot1.series[0].data = myData;
+    plot1.resetAxesScale();
+    plot1.axes.xaxis.numberTicks = 10;
+    plot1.axes.y2axis.numberTicks = 15;
+    plot1.replot();
+
+    function updateSeries() {
+        myData.splice(0, 1);
+        x = (new Date()).getTime();
+        y = Math.floor(Math.random() * 100);
+        myData.push([x, y]);
+
+        plot1.series[0].data = myData;
+        plot1.resetAxesScale();
+        plot1.axes.xaxis.numberTicks = 10;
+        plot1.axes.y2axis.numberTicks = 15;
+        plot1.replot();
+    }
+
+    window.setInterval(updateSeries, 1000);
+});
+});//]]>  
+
+</script>
+
+
+</head>
+<body>
+
+<div id="chart1" class="plot" style="width:700px;height:500px;"></div>
+
+</body>
+
+
+</html>
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type"
+	content="text/html;
+      charset=ISO-8859-1">
+<title></title>
+</head>
+<body onload="onload_function()"
+	style="color: rgb(0, 0, 0); background-color: rgb(51, 102, 102);">
+	<script type="text/javascript">
+		function onload_function() {
+
+			document.getElementById("ip1").value = '11';
+			document.getElementById("ip2").value = '0';
+			document.getElementById("ip3").value = '0';
+			document.getElementById("ip4").value = '100';
+		}
+	</script>
+	<font color="white">
+		<h1 align="center">My hiTECH Systems Arduino Ethernet sensors</h1>
+		<hr>
+		<br> Server Configuration<br>
+		<form name="inputserverip" method="get">
+			Your Server IP: <input name="serverip1" id="ip1" value="10" size="2"
+				type="text"> <input name="serverip2" id="ip2" value="0"
+				size="2" type="text"> <input name="serverip3" id="ip3"
+				value="0" size="2" type="text"> <input name="serverip4"
+				id="ip4" value="100" size="2" type="text"> <input
+				value="Submit" type="submit">
+		</form>
+		<form name="inputscript" method="get">
+			Server script path: <input name="serverscript"
+				value="/arduinoTempHumid/ArduinoCall.php" size="40" type="text">
+			<input value="Submit" type="submit">
+		</form>
+		<form name="inputscript" method="get">
+			Data transmission frequency: <input name="frequency" value="5"
+				size="6"> seconds <input value="Submit" type="submit">
+		</form> <br> <br> <br>
+	</font>
+</body>
+</html>

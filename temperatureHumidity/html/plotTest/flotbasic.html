@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Flot Examples</title>
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="../../../../lib/flot/jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="../../../../lib/flot/jquery.flot.js"></script>
+ </head>
+    <body>
+    <h1>Flot Examples</h1>
+
+    <div id="placeholder" style="width:600px;height:300px;"></div>
+
+
+<script type="text/javascript">
+$(function () {
+
+
+    var d3 = 
+    
+{
+label: 'Temperature [Fahrenheit]',
+    data: [
+,[1355324448000,8]
+,[1355324449000,2]
+,[1355324450000,1]
+,[1355324451000,21]
+,[1355324452000,60]
+,[1355324453000,67]
+,[1355324455000,59]
+,[1355324456000,54]
+,[1355324457000,56]
+,[1355324458000,15]
+,[1355324459000,64]
+,[1355324460000,8]
+,[1355324461000,9]
+,[1355324462000,14]
+,[1355324463000,11]
+,[1355324464000,64]
+,[1355324465000,63]
+,[1355324466000,49]
+,[1355324467000,30]
+]}
+
+
+
+    $.plot($("#placeholder"), [ d3 ]);
+});
+</script>
+
+ </body>
+</html>

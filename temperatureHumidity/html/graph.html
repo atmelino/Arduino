@@ -1,0 +1,249 @@
+<html>
+
+<head>
+<style type="text/css">
+body {
+	font-family: verdana, arial, sans-serif;
+	font-size: 12pt;
+	margin: 10px;
+	color: rgb(255, 204, 51);
+	background-color: rgb(51, 102, 102);
+}
+
+a:link {
+	color: yellow
+}
+
+a:visited {
+	color: orange
+}
+</style>
+
+<script type="text/javascript">
+	var plot1;
+	var plotJ;
+	var nowTime;
+	var range_names = [ "Last 10 seconds", "Last minute", "Last 10 minutes",
+			"Last hour", "Last six hours", "Last 24 hours", "Last three days",
+			"Last week", "Last two weeks", "Last month", "Last six months",
+			"Last year", "All" ];
+	var range_numbers = [ 10, 10, 60, 10 * 60, 60 * 60, 6 * 60 * 60,
+			24 * 60 * 60, 3 * 24 * 60 * 60, 7 * 24 * 60 * 60,
+			14 * 24 * 60 * 60, 31 * 24 * 60 * 60, 6 * 31 * 24 * 60 * 60,
+			12 * 31 * 24 * 60 * 60 ];
+	var range_options = [ range_names, range_numbers ];
+	var selIndex;
+	var timeRange = 10;
+	var liveYesNo;
+	var ldchecked;
+	var IPString;
+
+	function onload_function() {
+
+		// restore saved settings from cookies
+		ldchecked = getCookie("livedata");
+		if (ldchecked == 1) {
+			document.getElementById('livedata').checked = true;
+		} else {
+			document.getElementById('livedata').checked = false;
+		}
+
+		//IPString=getCookie("IPDevice");
+		//printlnMessage("IPString: " + IPString );
+		document.getElementById('ip').value = getCookie("IPDevice");
+
+		for ( var i = 0; i <= range_names.length; i++) {
+			AddItem(range_names[i], i);
+			//range_numbers[i] = 1000 * range_numbers[i];
+		}
+		document.getElementById("myList").value = getCookie("selIndex") - 1;
+		rangeSelect();
+		refreshIt(); // refresh every x secs
+
+	}
+
+	function AddItem(Text, Value) {
+		// Create an Option object        
+
+		var opt = document.createElement("option");
+
+		// Add an Option object to Drop Down/List Box
+		document.getElementById("myList").options.add(opt);
+
+		// Assign text and value to Option object
+		opt.text = Text;
+		opt.value = Value;
+
+	}
+
+	function refreshIt() {
+		//printMessage("timer event");
+
+		nowTime = new Date();
+		var today = new Date();
+		var Y = today.getFullYear();
+		var M = today.getMonth() + 1;
+		var D = today.getDate();
+		var h = nowTime.getHours();
+		var m = nowTime.getMinutes();
+		var s = nowTime.getSeconds();
+		document.getElementById('date').innerHTML = M + "-" + D + "-" + Y;
+		document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+
+		if (document.getElementById('livedata').checked) {
+			refreshGraph();
+			//printlnMessage("index:" + selIndex + " val: "+ timeRange );
+		}
+
+		printlnMessage("hello");
+		var ajax = getRequest();
+		printlnMessage(ajax.open("GET", "do_query.php", true));
+//http://stackoverflow.com/questions/7165395/call-php-function-from-javascript
+		setTimeout('refreshIt()', 1000); // refresh every 5 secs
+	}
+
+	function getRequest() {
+
+		var req = false;
+		req = new XMLHttpRequest();
+		return req;
+
+	}
+
+	function refreshGraph() {
+		img = document.getElementById("cam");
+		IPString = getCookie("IPDevice");
+		//printlnMessage("IPString: " + IPString );
+
+		var mysrc = "graph.php?r=" + timeRange + "&i=" + IPString;
+		//printlnMessage(mysrc);
+		img.src = mysrc;
+	}
+
+	function rangeSelect() {
+
+		var eSelect = document.getElementById('myList');
+
+		selIndex = eSelect.selectedIndex;
+		setCookie("selIndex", selIndex, 365);
+
+		timeRange = range_numbers[selIndex];
+		refreshGraph();
+		//printlnMessage("index:" + selIndex + " val: " + timeRange);
+
+	}
+
+	function liveChanged() {
+		ldchecked = document.getElementById('livedata').checked;
+		//printlnMessage(ldchecked);
+
+		if (ldchecked == true) {
+			setCookie("livedata", 1, 365);
+		} else {
+			setCookie("livedata", 0, 365);
+		}
+	}
+
+	function IPEnter() {
+		IPString = document.getElementById('ip').value;
+		//printlnMessage(IPString);
+		//printlnMessage(fnValidateIPAddress(IPString));
+		if (fnValidateIPAddress(IPString) == true) {
+			setCookie("IPDevice", IPString, 365);
+		}
+	}
+
+	function printlnMessage(message) {
+
+		document.getElementById('message').innerHTML += message + '\n';
+		var textarea = document.getElementById('message');
+		textarea.scrollTop = textarea.scrollHeight;
+
+	}
+
+	function getCookie(c_name) {
+		var i, x, y, ARRcookies = document.cookie.split(";");
+		for (i = 0; i < ARRcookies.length; i++) {
+			x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+			y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+			x = x.replace(/^\s+|\s+$/g, "");
+			if (x == c_name) {
+				return unescape(y);
+			}
+		}
+	}
+
+	function setCookie(c_name, value, exdays) {
+		var exdate = new Date();
+		exdate.setDate(exdate.getDate() + exdays);
+		var c_value = escape(value)
+				+ ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+		document.cookie = c_name + "=" + c_value;
+	}
+
+	/******* Validate IP Address IPv4 *********/
+	function fnValidateIPAddress(ipaddr) {
+		//Remember, this function will validate only Class C IP.
+		//change to other IP Classes as you need
+		ipaddr = ipaddr.replace(/\s/g, "") //remove spaces for checking
+		var re = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/; //regex. check for digits and in
+		//all 4 quadrants of the IP
+		if (re.test(ipaddr)) {
+			//split into units with dots "."
+			var parts = ipaddr.split(".");
+			//if the first unit/quadrant of the IP is zero
+			if (parseInt(parseFloat(parts[0])) == 0) {
+				return false;
+			}
+			//if the fourth unit/quadrant of the IP is zero
+			if (parseInt(parseFloat(parts[3])) == 0) {
+				return false;
+			}
+			//if any part is greater than 255
+			for ( var i = 0; i < parts.length; i++) {
+				if (parseInt(parseFloat(parts[i])) > 255) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+//	<td><img src="graph.php?r=86400" id=cam></td>
+
+	</script>
+</head>
+
+<body onload=" onload_function()" link="#0000EE" vlink="#551A8B"
+	alink="#EE0000">
+	<table border="0">
+		<tr>
+			<td>
+				<form>
+					<select id="IPlist" onchange="IPSelect()">
+						<option>Select Device</option>
+					</select>
+				</form>IP: <textarea rows="1" cols="10" id="ip" onchange="IPEnter()"></textarea><br>
+				Type: <textarea rows="1" cols="10" id="sensortype"></textarea><br>
+				Date: <textarea rows="1" cols="10" id="date"></textarea><br>Time:
+				<textarea rows="1" cols="10" id="time"></textarea>
+				<form>
+					Live Data <input type="checkbox" id="livedata"
+						onchange="liveChanged()"><br>
+				</form>
+				<form>
+					<select id="myList" onchange="rangeSelect()">
+						<option>Select Range</option>
+					</select>
+				</form> <textarea rows="15" cols="20" id="message"></textarea>
+			</td>
+			<td><img  id=cam></td>
+		</tr>
+	</table>
+
+
+</body>
+
+</html>
+

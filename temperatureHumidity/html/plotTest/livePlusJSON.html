@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Live and JSON</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../../lib/jqplot/jquery.js"></script>
+<style type="text/css">
+</style>
+<link rel="stylesheet" type="text/css"
+	href="../../lib/jqplot/jquery.jqplot.css">
+<script type="text/javascript" src="../../lib/jqplot/jquery.jqplot.js"></script>
+<script type="text/javascript"
+	src="../../lib/jqplot/plugins/jqplot.barRenderer.js"></script>
+<script type="text/javascript"
+	src="../../lib/jqplot/plugins/jqplot.categoryAxisRenderer.js"></script>
+<!-- <script type="text/javascript"  src="../../lib/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+ -->
+<script type="text/javascript"
+	src="../../lib/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+
+
+<!--  -->
+
+<script type="text/javascript">
+	//          
+	var plot1;
+	var plotJ;
+	var nowTime;
+
+	function onload_function() {
+		refreshIt(); // refresh every x secs
+	}
+
+	function refreshIt() {
+		//printMessage("timer event");
+
+		nowTime = new Date();
+		var h = nowTime.getHours();
+		var m = nowTime.getMinutes();
+		var s = nowTime.getSeconds();
+		document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+
+		JSONPlot();
+		//livePlot();
+		//updateJSONPlot();
+		setTimeout('refreshIt()', 1000); // refresh every 5 secs
+	}
+
+	function timeConverter(UNIX_timestamp) {
+		var a = new Date(UNIX_timestamp);
+		var months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+				'Sep', 'Oct', 'Nov', 'Dec' ];
+		var year = a.getFullYear();
+		var month = months[a.getMonth()];
+		var date = a.getDate();
+		var hour = a.getHours();
+		var min = a.getMinutes();
+		var sec = a.getSeconds();
+		var time = month + ' ' + date + ','  + year + ' ' + hour + ':' + min
+				+ ':' + sec+'PM';
+		return time;
+	}
+
+	$(window).load(function() {
+		$(document).ready(function() {
+			livePlot();
+
+			//JSONPlot();
+
+		});
+	});//     
+
+	function successJSON(data) {
+		//printMessage(data.data);
+		//$datetime = new Date().getTime();
+		//$mysqldate = date("m-d-Y h:i:sA", $datetime);
+
+		//printMessage(getSeconds());
+		//printMessage($mysqldate);
+
+		//printMessage($.jsDate.strftime('Feb 8, 2006 8:48:32', '%Y-%m-%d %H:%M:%S'));
+		//printMessage($.jsDate.getDate().toString());
+
+		//var seconds = new Date().getTime() / 1000;		
+		var seconds = nowTime.getTime() / 1000;
+
+		printMessage(seconds);
+		var mintime=timeConverter(nowTime-60000);
+		printMessage(mintime);
+		var maxtime=timeConverter(nowTime);
+		printMessage(maxtime);
+
+		plotJ = $.jqplot('chartArea', data.data, {
+			axes : {
+				xaxis : {
+					//min : 'January 6, 2013 8:19PM'
+					//max : 'January 6, 2013 8:20PM'
+					min : nowTime-60000,
+					max : nowTime,
+					
+					renderer : $.jqplot.DateAxisRenderer,
+					rendererOptions : {
+						tickRenderer : $.jqplot.CanvasAxisTickRenderer
+					},
+					tickInterval : '60 second',
+					tickOptions : {
+						formatString : '%d %b'
+					}
+				}
+			//xaxis : 
+			//min : new Date().getTime()-1000,
+			//	max : new Date().getTime()
+
+			},
+			legend : {
+				show : true,
+				location : 'se'
+			}
+		}).replot();
+		//printMessage("value of plotJ");
+		//printMessage(plotJ);
+
+	}
+
+	function JSONPlot() {
+
+		$.ajax({
+			url : "../retrieve.php",
+			dataType : "json",
+			async : false,
+			success : function(data) {
+				successJSON(data);
+			}
+		});
+	}
+
+	function updateJSONPlot() {
+		printMessage("refresh plotJ");
+		plotJ.replot();
+	}
+
+	function livePlot() {
+		plot1 = $.jqplot('chart1', [ new Array(1) ], {
+			series : [ {
+				yaxis : 'y2axis',
+				label : '',
+				showMarker : false,
+				fill : false,
+				neighborThreshold : 3,
+				lineWidth : 2.2,
+				color : '#0571B6',
+				fillAndStroke : true
+			} ]
+		});
+		printMessage(plot1);
+
+		window.setInterval(updateLiveSeries, 1000);
+
+	}
+
+	function updateLiveSeries() {
+
+		var myData = [];
+		var x = (new Date()).getTime() - 101000;
+		var y;
+		var i;
+		for (i = 0; i < 100; i++) {
+			x += 1000;
+			y = Math.floor(Math.random() * 100);
+			myData.push([ x, y ]);
+		}
+		myData.splice(0, 1);
+		x = (new Date()).getTime();
+		y = Math.floor(Math.random() * 100);
+		myData.push([ x, y ]);
+
+		plot1.series[0].data = myData;
+		plot1.resetAxesScale();
+		plot1.axes.xaxis.numberTicks = 10;
+		plot1.axes.y2axis.numberTicks = 15;
+		plot1.replot();
+
+	}
+
+	function printMessage(message) {
+
+		document.getElementById('message').innerHTML += message + '\n';
+		var textarea = document.getElementById('message');
+		textarea.scrollTop = textarea.scrollHeight;
+
+	}
+</script>
+</head>
+<body onload=" onload_function()">
+	<table border="1" cellpadding="2" cellspacing="2" width="100%">
+		<tbody>
+			<tr>
+				<td valign="top">Time: <textarea rows="1" cols="10" id="time"></textarea><br>
+					Message: <textarea rows="20" cols="40" id="message"></textarea>
+				</td>
+				<td valign="top">
+					<div id="chart1" class="plot" style="width: 700px; height: 200px;"></div>
+					<div id="chartArea" class="plot"
+						style="width: 700px; height: 200px;"></div>
+					<div id="chartcombined" class="plot"
+						style="width: 700px; height: 200px;"></div> <br>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	&nbsp;
+</body>
+</html>

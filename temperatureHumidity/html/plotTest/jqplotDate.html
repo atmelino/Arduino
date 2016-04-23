@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	
+	<title>Zooming with Date and Log Axes</title>
+
+    <link class="include" rel="stylesheet" type="text/css" href="../../lib/jqplot/jquery.jqplot.min.css" />
+
+  
+  <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../excanvas.js"></script><![endif]-->
+    <script class="include" type="text/javascript" src="../../lib/jqplot/jquery.min.js"></script>
+    
+   
+</head>
+<body>
+
+    <div class="example-plot" id="chart1" style="width: 700px; height: 200px;"></div>
+    <div class="example-plot" id="chart2" style="width: 700px; height: 200px;"></div>
+  
+<!-- Example scripts go here -->
+
+<script type="text/javascript" class="code">
+$(document).ready(function(){
+  
+var cosPoints = [[1,2],[2,3]]; 
+
+var cosPoints2 = [[1355760957000,10]
+,[1355760958000,15]
+,[1355760959000,1]
+,[1355760960000,19]
+,[1355760961000,2]
+,[1355760962000,6]
+,[1355760963000,3]
+,[1355760964000,12]
+,[1355760965000,18]
+,[1355760966000,13]
+,[1355760967000,6]
+,[1355760968000,2]
+,[1355760969000,18]
+,[1355760970000,19]
+,[1355760971000,12]
+,[1355760972000,19]
+,[1355760973000,8]
+,[1355760974000,6]
+,[1355760975000,14]
+]
+  var plot1 = $.jqplot('chart1', [cosPoints], {  
+      series:[{showMarker:false}],
+      axes:{
+          xaxis:{
+            label:'x'
+        },
+          yaxis:{
+            label:'y'
+        }
+      }
+  });
+});
+</script>
+  
+
+<script type="text/javascript" class="code">
+
+var yahoo=[["2011-10-18",580.19,592.56,577.40,590.51,3800800,590.51],
+["2011-10-17",583.72,591.83,578.00,582.41,4008200,582.41],
+["2011-10-14",599.47,599.60,587.57,591.68,8529900,591.68],
+["2011-10-13",550.03,559.00,548.02,558.99,5639600,558.99],
+["2011-10-12",548.13,555.23,544.63,548.50,3177800,548.50],
+["2011-10-11",533.46,546.80,533.46,543.18,2853400,543.18],
+["2011-10-10",525.18,537.47,523.20,537.17,2322200,537.17],
+["2011-10-07",516.83,520.50,510.30,515.12,2855900,515.12],
+["2011-10-06",507.50,515.23,502.60,514.71,3424300,514.71],
+["2011-10-05",496.35,507.80,480.77,504.70,4534100,504.70],
+["2011-10-04",490.03,503.44,480.60,501.90,4158800,501.90],
+["2011-10-03",509.85,512.00,495.00,495.52,4474400,495.52],
+["2011-09-30",520.21,524.00,514.38,515.04,2723600,515.04],
+["2011-09-29",536.04,537.30,519.41,527.50,2906600,527.50],
+];
+
+var yahoo2=[["2011-10-18",580.19],
+["2011-10-13",550.03],
+["2011-09-29",536.04],
+];
+
+
+var yahoo3 = [[1355760957000,10]
+,[1355760958000,15]
+,[1355760959000,1]
+,[1355760960000,19]
+];
+
+
+$(document).ready(function(){
+    plot1 = $.jqplot('chart2', [yahoo3], { 
+      series:[{showMarker:true}],
+        axes: { 
+            xaxis: { 
+                renderer:$.jqplot.DateAxisRenderer,
+                rendererOptions: {
+                    tickInset: 0
+                },
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                  formatString: "%m/%d/%y"
+                } 
+            }, 
+            yaxis: {  
+                renderer: $.jqplot.LogAxisRenderer,
+                tickOptions:{ prefix: '$' } 
+            } 
+        }, 
+        cursor:{
+            show: true, 
+            zoom: true
+        } 
+    });
+});
+
+</script>
+
+<!-- End example scripts -->
+
+<!-- Don't touch this! -->
+
+
+    <script class="include" type="text/javascript" src="../../lib/jqplot/jquery.jqplot.min.js"></script>
+ 
+<!-- End Don't touch this! -->
+
+<!-- Additional plugins go here -->
+
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.logAxisRenderer.min.js"></script>
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script>
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.cursor.min.js"></script>
+
+<!-- End additional plugins -->
+
+
+	</div>	
+	<script type="text/javascript" src="../../lib/jqplot/example.min.js"></script>
+
+</body>
+
+
+</html>

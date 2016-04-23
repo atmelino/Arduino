@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Temperature and Humidity Sensor Network</title>
+<link rel="stylesheet" type="text/css"
+	href="../lib/jqplot/jquery.jqplot.min.css">
+<link rel="stylesheet" type="text/css"
+	href="../lib/jqplot/jquery.jqplot.css">
+<script type="text/javascript" src="../lib/jqplot/jquery.min.js"></script>
+<script type="text/javascript" src="../lib/jqplot/jquery.js"></script>
+<style type="text/css"></style>
+<script type="text/javascript" src="../lib/jqplot/jquery.jqplot.js"></script>
+<script type="text/javascript"
+	src="../lib/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script type="text/javascript">
+	var plot1;
+	var plotJ;
+	var nowTime;
+	var x_min = (new Date("2010/12/01")).getTime();
+	var x_max = (new Date("2010/12/31")).getTime();
+	var time_of_last_value;
+	var time_period = 10000;
+	var range_names = [ "Last 10 seconds", "Last minute", "Last 10 minutes",
+			"Last hour", "Last six hours", "Last day", "Last three days",
+			"Last week", "Last two weeks", "Last month", "Last six months",
+			"Last year", "All" ];
+	var range_numbers = [ 10, 10, 60, 10 * 60, 60 * 60, 6 * 60 * 60,
+			24 * 60 * 60, 3 * 24 * 60 * 60, 7 * 24 * 60 * 60,
+			14 * 24 * 60 * 60, 31 * 24 * 60 * 60, 6 * 31 * 24 * 60 * 60,
+			12 * 31 * 24 * 60 * 60 ];
+	var range_options = [ range_names, range_numbers ];
+
+	function onload_function() {
+
+		printMessage("begin onload");
+
+		refreshIt(); // refresh every x secs
+
+		for ( var i = 0; i <= range_names.length; i++) {
+			AddItem(range_names[i], 3);
+			range_numbers[i] = 1000 * range_numbers[i];
+		}
+
+		loop_fetchData();
+	}
+
+	function loop_fetchData() {
+
+		JSONPlot();
+
+		setTimeout(loop_fetchData, 1000);
+
+	}
+
+	function refreshIt() {
+
+		nowTime = new Date();
+		var today = new Date();
+		var Y = today.getFullYear();
+		var M = today.getMonth() + 1;
+		var D = today.getDate();
+		var h = today.getHours();
+		var m = today.getMinutes();
+		var s = today.getSeconds();
+		// add a zero in front of numbers<10
+		m = checkTime(m);
+		s = checkTime(s);
+
+		document.getElementById('date').innerHTML = M + "-" + D + "-" + Y;
+		document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+
+		setTimeout('refreshIt()', 1000); // refresh every 5 secs
+	}
+
+	function checkTime(i) {
+		if (i < 10) {
+			i = "0" + i;
+		}
+		return i;
+	}
+
+	function timeConverter(UNIX_timestamp) {
+		var a = new Date(UNIX_timestamp);
+		var months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+				'Sep', 'Oct', 'Nov', 'Dec' ];
+		var year = a.getFullYear();
+		var month = months[a.getMonth()];
+		var date = a.getDate();
+		var hour = a.getHours();
+		var min = a.getMinutes();
+		var sec = a.getSeconds();
+		var time = month + ' ' + date + ',' + year + ' ' + hour + ':' + min
+				+ ':' + sec + 'PM';
+		return time;
+	}
+
+	function put() {
+		//txt=document.forms[0].myList.options[document.forms[0].myList.selectedIndex].text
+		number = document.forms[0].myList.selectedIndex;
+		//test_function("select: "+number );
+		//test_function(range_numbers[number] );
+		//test_function(range_names[number] );
+		//test_function(range_options[0,0] );
+		//test_function("idx:"+number+"\n"+"val:"+range_numbers[number] );
+		printMessage("idx:" + number + "\n" + "val:" + range_numbers[number]);
+
+		time_period = range_numbers[number];
+
+	}
+
+	function AddItem(Text, Value) {
+		// Create an Option object        
+
+		var opt = document.createElement("option");
+
+		// Add an Option object to Drop Down/List Box
+		document.getElementById("myList").options.add(opt);
+
+		// Assign text and value to Option object
+		opt.text = Text;
+		opt.value = Value;
+
+	}
+
+	function printMessage(message) {
+
+		document.getElementById('message').innerHTML += message + '\n';
+		var textarea = document.getElementById('message');
+		textarea.scrollTop = textarea.scrollHeight;
+
+	}
+</script>
+</head>
+<!--HTML section -->
+<body onload=" onload_function()"
+	style="color: rgb(0, 0, 0); background-color: rgb(51, 102, 102);"
+	link="#0000EE" vlink="#551A8B" alink="#EE0000">
+	<table style="text-align: left; width: 100%;" border="1"
+		cellpadding="2" cellspacing="2">
+		<tbody>
+			<tr>
+				<td style="vertical-align: top;"><span
+					style="color: rgb(255, 204, 51);">Status</span><br> <span
+					style="font-family: monospace;"><span
+						style="color: rgb(255, 204, 255);">Date:</span></span> <textarea rows="1"
+						cols="10" id="date"></textarea><br> <span
+					style="font-family: monospace; color: rgb(255, 204, 255);">Time:</span>
+					<font size="-1"> <textarea rows="1" cols="10" id="time"></textarea></font><br>
+					<span style="font-family: monospace; color: rgb(255, 204, 255);">IP:</span>
+					<textarea rows="1" cols="12" id="IP"></textarea><br> <br>
+					<span style="color: rgb(255, 204, 51);">Graph</span>
+					<form>
+						<select id="myList" onchange="put()">
+							<option>Select Range</option>
+						</select> <br>
+					</form>
+					<table style="text-align: left; width: 100%;" border="1"
+						cellpadding="2" cellspacing="2">
+						<tbody>
+							<tr>
+								<td style="vertical-align: top;"><br></td>
+								<td style="vertical-align: top; text-align: center;"><input
+									class="pan_up" value="^" type="button"></td>
+								<td style="vertical-align: top;"><br></td>
+							</tr>
+							<tr>
+								<td style="vertical-align: top; text-align: center;"><input
+									class="pan_left" value="&lt;" type="button"></td>
+								<td style="vertical-align: top; text-align: center;"><input
+									class="plot_reset" value="reset" type="button"></td>
+								<td style="vertical-align: top; text-align: center;"><input
+									class="pan_right" value="&gt;" type="button"></td>
+							</tr>
+							<tr>
+								<td style="vertical-align: top; text-align: center;"><input
+									class="zoom_out" value="-" type="button"></td>
+								<td style="vertical-align: top; text-align: center;"><input
+									class="pan_down" value="v" type="button"></td>
+								<td style="vertical-align: top; text-align: center;"><input
+									class="zoom_in" value="+" type="button"></td>
+							</tr>
+						</tbody>
+					</table> <textarea rows="15" cols="30" id="message"></textarea> </td>
+				<td style="vertical-align: top;">
+					<div
+						style="width: 600px; height: 500px; background-color: rgb(204, 255, 255);"
+						id="chartArea"></div> <br>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<!-- -->
+	<!-- Code section -->
+	<script type="text/javascript">
+		$(function() {
+
+			var i = 0;
+			var chartArea = $("#chartArea");
+
+			document.getElementById('IP').innerHTML = "192.169.0.177";
+
+			$("input.zoom_out").click(function() {
+				//    AddItem("New Item",3);
+				printMessage("zoom out");
+				plot_temp.zoomOut();
+				plot_hum.zoomOut();
+			});
+
+			$("input.zoom_in").click(function() {
+				printMessage("zoom in");
+				plot_temp.zoom();
+				plot_hum.zoom();
+			});
+
+			$("input.pan_up").click(function() {
+				plot_temp.pan({
+					top : -10
+				});
+				plot_hum.pan({
+					top : -10
+				});
+			});
+			$("input.pan_down").click(function() {
+				plot_temp.pan({
+					top : 10
+				});
+				plot_hum.pan({
+					top : 10
+				});
+			});
+			$("input.pan_left").click(function() {
+				plot_temp.pan({
+					left : -10
+				});
+				plot_hum.pan({
+					left : -10
+				});
+			});
+			$("input.pan_right").click(function() {
+				plot_temp.pan({
+					left : 10
+				});
+				plot_hum.pan({
+					left : 10
+				});
+			});
+
+		});
+
+		function JSONPlot() {
+
+			$.ajax({
+				url : "retrieve.php",
+				dataType : "json",
+				async : false,
+				success : function(data) {
+					successJSON(data);
+				}
+			});
+		}
+
+		function successJSON(data) {
+			//printMessage(data.data);
+
+			var seconds = nowTime.getTime() / 1000;
+			var mintime = nowTime - time_period;
+			var maxtime = nowTime;
+
+			//printMessage(seconds);
+			//printMessage(timeConverter(mintime));
+			//printMessage(timeConverter(maxtime));
+
+			plotJ = $.jqplot('chartArea', data.data, {
+				axes : {
+					xaxis : {
+						//min : 'January 6, 2013 8:19PM'
+						//max : 'January 6, 2013 8:20PM'
+						min : mintime,
+						max : maxtime,
+
+						renderer : $.jqplot.DateAxisRenderer,
+						rendererOptions : {
+							tickRenderer : $.jqplot.CanvasAxisTickRenderer
+						},
+						tickInterval : '60 second',
+						tickOptions : {
+							formatString : '%d %b'
+						}
+					}
+				},
+				legend : {
+					show : true,
+					location : 'se'
+				},
+				series : [ {
+					label : 'humidity'
+				}, {
+					label : 'S2',
+					color : '#00FF00'
+				} ]
+			}).replot();
+
+		}
+	</script>
+</body>
+</html>

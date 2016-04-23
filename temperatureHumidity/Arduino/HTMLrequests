@@ -1,0 +1,28 @@
+==================================================================
+Chrome submit
+leads to
+
+
+GET /?serverip1=45&serverip2=26&serverip3=0&serverip4=100 HTTP/1.1
+Host: 11.0.0.177
+Connection: keep-alive
+Cache-Control: max-age=0
+User-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Referer: http://11.0.0.177/?serverscript=%2FarduinoTempHumid%2FArduinoTest%2FArduinoCall02.php
+Accept-Encoding: gzip,deflate,sdch
+Accept-Language: en-US,en;q=0.8
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
+
+
+==========================================================
+curl -X POST http://11.0.0.177 -d "Request: temperature PHP"
+leads to
+
+POST / HTTP/1.1
+User-Agent: curl/7.22.0 (i686-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3
+Host: 11.0.0.177
+Accept: */*
+Content-Length: 24
+Content-Type: application/x-www-form-urlencoded
+

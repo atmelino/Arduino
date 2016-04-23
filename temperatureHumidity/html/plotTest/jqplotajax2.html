@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<head>
+<title>Ajax 2</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../../lib/jqplot/jquery.js"></script>
+<style type='text/css'></style>
+<link rel="stylesheet" type="text/css"
+	href="../../lib/jqplot/jquery.jqplot.css" />
+<script type="text/javascript" src="../../lib/jqplot/jquery.jqplot.js"></script>
+<script type="text/javascript"
+	src="../../lib/jqplot/plugins/jqplot.barRenderer.js"></script>
+<script type="text/javascript"
+	src="../../lib/jqplot/plugins/jqplot.categoryAxisRenderer.js"></script>
+<!-- <script type="text/javascript"  src="../../lib/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+ -->
+<script type="text/javascript"
+	src="../../lib/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+
+
+
+<script type='text/javascript'>
+	var plotJ;
+
+	function onload_function() {
+		refreshIt(); // refresh every x secs
+	}
+
+	function refreshIt() {
+		//printMessage("timer event");
+
+		updateJSONPlot();
+		setTimeout('refreshIt()', 1000); // refresh every 5 secs
+	}
+
+	var ajaxDataRenderer;
+
+	function rend(url, plot, options) {
+		var ret = null;
+		$.ajax({
+			// have to use synchronous here, else the function 
+			// will return before the data is fetched
+			async : false,
+			url : url,
+			dataType : "json",
+			success : function(data) {
+				ret = data;
+			}
+		});
+		return ret;
+	}
+
+	function JSONPlot() {
+
+		
+		// The url for our json data
+		var jsonurl = "./jsondata.txt";
+		
+		// Our ajax data renderer which here retrieves a text file.
+		// it could contact any source and pull data, however.
+		// The options argument isn't used in this renderer.
+		//ajaxDataRenderer = rend(jsonurl, plot, options) ;
+
+
+		// passing in the url string as the jqPlot data argument is a handy
+		// shortcut for our renderer.  You could also have used the
+		// "dataRendererOptions" option to pass in the url.
+		plotJ = $.jqplot('chart2', jsonurl, {
+			title : "AJAX JSON Data Renderer",
+			dataRenderer : rend,
+			dataRendererOptions : {
+				unusedOptionalUrl : jsonurl
+			}
+		});
+
+	}
+
+	function updateJSONPlot() {
+		//printMessage("refresh plotJ");
+		plotJ.replot();
+	}
+</script>
+</head>
+<body onload=" onload_function()">
+
+
+	<div id="chart2" style="height: 300px; width: 500px;"></div>
+
+
+	<script class="code" type="text/javascript">
+		$(document).ready(function() {
+			JSONPlot();
+
+		});
+	</script>
+
+</body>
+
+</html>
+

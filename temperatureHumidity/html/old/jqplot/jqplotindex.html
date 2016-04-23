@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content=
+    "HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+    <title>
+      Temperature and Humidity Sensor Network
+    </title>
+    <link class="include" rel="stylesheet" type="text/css" href="../lib/jqplot/jquery.jqplot.min.css" />
+
+  
+  <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../excanvas.js"></script><![endif]-->
+    <script class="include" type="text/javascript" src="../lib/jqplot/jquery.min.js"></script>
+
+</script>
+    <script language="JavaScript" type="text/javascript">
+//<![CDATA[
+    <!--
+
+    var x_min= (new Date("2010/12/01")).getTime();
+    var x_max= (new Date("2010/12/31")).getTime();
+    var data_temp = [];
+    var data_humid = [];
+    var data_tempurl = "temperature.json";
+    var data_humidurl = "humidity.json";
+    var plot_temp, plot_hum, plot;
+    var time_of_last_value;
+    var time_period = 10000;
+
+    var range_names=["Last 10 seconds","Last minute","Last 10 minutes","Last hour","Last six hours","Last day","Last three days","Last week","Last two weeks","Last month","Last six months","Last year","All"];
+    var range_numbers=[10,10,60,10*60,60*60,6*60*60,24*60*60,3*24*60*60,7*24*60*60,14*24*60*60,31*24*60*60,6*31*24*60*60,12*31*24*60*60];
+    var range_options=[range_names, range_numbers];
+
+    function onload_function() {
+
+       printMessage("begin onload" );
+    //testFlot();
+
+    //setTimeout('refreshIt()',1000); // refresh every 5 secs
+    refreshIt(); // refresh every 5 secs
+
+    //$.plot($("#chartArea"), data_temp, options);
+
+
+
+    for (var i=0;i<=range_names.length;i++)
+    {
+      AddItem(range_names[i],3);
+      range_numbers[i]=1000*range_numbers[i];
+    }
+
+    loop_fetchData();
+    }
+
+    function loop_fetchData() {
+
+        if ($("#liveData:checked").length > 0) {
+
+                dual_plot();
+
+        }
+        setTimeout(loop_fetchData, 1000);
+
+    }
+
+    function refreshIt() {
+
+        var today=new Date();
+        var Y=today.getFullYear();
+        var M=today.getMonth()+1;
+        var D=today.getDate();  
+        var h=today.getHours();
+        var m=today.getMinutes();
+        var s=today.getSeconds();
+        // add a zero in front of numbers<10
+        m=checkTime(m);
+        s=checkTime(s);
+
+        document.getElementById('date').innerHTML=M+"-"+D+"-"+Y;
+        document.getElementById('time').innerHTML=h+":"+m+":"+s;
+
+        setTimeout('refreshIt()',1000); // refresh every 5 secs
+    }
+
+
+        function put(){
+                //txt=document.forms[0].myList.options[document.forms[0].myList.selectedIndex].text
+                number=document.forms[0].myList.selectedIndex;
+                //test_function("select: "+number );
+                //test_function(range_numbers[number] );
+                //test_function(range_names[number] );
+                //test_function(range_options[0,0] );
+                //test_function("idx:"+number+"\n"+"val:"+range_numbers[number] );
+            printMessage("idx:"+number+"\n"+"val:"+range_numbers[number] );
+
+                time_period=range_numbers[number];
+
+        }
+
+    function printMessage(message)
+    {
+
+        //document.getElementById('messageTextBox').innerHTML=message;
+        document.getElementById('messageTextBox').innerHTML+=message;
+        //document.myform.outputtext.value += newtext;
+
+    }
+
+    var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
+
+    function testFlot() {
+            var d1 = [];
+            for (var i = 0; i < 14; i += 0.5)
+                d1.push([i, Math.sin(i)]);
+
+            
+
+            // a null signifies separate line segments
+            var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
+
+            $.plot($("#chartArea"), [ d1, d2, d3 ]);
+    }
+
+
+    function checkTime(i)
+    {
+        if (i<10)
+          {
+                  i="0" + i;
+          }
+        return i;
+    }
+
+    function AddItem(Text,Value)
+    {
+        // Create an Option object        
+
+        var opt = document.createElement("option");
+
+        // Add an Option object to Drop Down/List Box
+        document.getElementById("myList").options.add(opt);
+
+        // Assign text and value to Option object
+        opt.text = Text;
+        opt.value = Value;
+
+    }
+
+    //-->
+    //]]>
+    </script>
+  </head>
+  <body onload=" onload_function()" style=
+  " color: rgb(0, 0, 0); background-color: rgb(51, 102, 102);" alink="#EE0000"
+  link="#0000EE" vlink="#551A8B">
+    <table style="text-align: left; width: 100%;" border="1" cellpadding="2"
+    cellspacing="2">
+      <tbody>
+        <tr>
+          <td valign="top">
+            <br />
+            <textarea rows="30" cols="20" id="messageTextBox">
+</textarea>
+          </td>
+          <td style="vertical-align: top;">
+            <span style="color: rgb(255, 204, 51);">Status</span><br />
+            <span style="font-family: monospace;"><span style=
+            "color: rgb(255, 204, 255);">Date:</span></span> 
+            <textarea rows="1" cols="10" id="date">
+</textarea><br />
+            <span style=
+            "font-family: monospace; color: rgb(255, 204, 255);">Time:</span>
+            <font size="-1">
+            <textarea rows="1" cols="10" id="time">
+</textarea></font><br />
+            <span style=
+            "font-family: monospace; color: rgb(255, 204, 255);">IP:</span> 
+            <textarea rows="1" cols="12" id="IP">
+</textarea><br />
+            <br />
+            <input style="color: rgb(255, 204, 102);" id="liveData" checked=
+            "yes" type="checkbox" /><span style=
+            "color: rgb(255, 204, 102);">Live Data</span><br />
+            <form>
+              <select id="myList" onchange="put()">
+                <option>
+                  Select Range
+                </option>
+              </select><br />
+            </form><span style="color: rgb(255, 204, 51);">Graph</span>
+            <table style="text-align: left; width: 100%;" border="1"
+            cellpadding="2" cellspacing="2">
+              <tbody>
+                <tr>
+                  <td style="vertical-align: top;">
+                    <br />
+                  </td>
+                  <td style="vertical-align: top; text-align: center;">
+                    <input class="pan_up" value="^" type="button" />
+                  </td>
+                  <td style="vertical-align: top;">
+                    <br />
+                  </td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top; text-align: center;">
+                    <input class="pan_left" value="&lt;" type="button" />
+                  </td>
+                  <td style="vertical-align: top; text-align: center;">
+                    <input class="plot_reset" value="reset" type="button" />
+                  </td>
+                  <td style="vertical-align: top; text-align: center;">
+                    <input class="pan_right" value="&gt;" type="button" />
+                  </td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top; text-align: center;">
+                    <input class="zoom_out" value="-" type="button" />
+                  </td>
+                  <td style="vertical-align: top; text-align: center;">
+                    <input class="pan_down" value="v" type="button" />
+                  </td>
+                  <td style="vertical-align: top; text-align: center;">
+                    <input class="zoom_in" value="+" type="button" />
+                  </td>
+                </tr>
+              </tbody>
+            </table><input class="dual_plot" value="dual_plot" type="button" />
+          </td>
+          <td style="vertical-align: top;">
+            <div style=
+            "width: 600px; height: 400px; background-color: rgb(204, 255, 255);"
+            id="chartArea"></div><br />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+<script id="source" language="javascript" type="text/javascript">
+
+    //<![CDATA[
+
+    $(function () {
+
+        var i=0;
+        var chartArea = $("#chartArea");
+
+        document.getElementById('IP').innerHTML="192.169.0.177";
+
+    $("input.zoom_out").click(function () {
+        //    AddItem("New Item",3);
+        printMessage("zoom out");
+        plot_temp.zoomOut();
+        plot_hum.zoomOut();
+    });
+
+    $("input.zoom_in").click(function () {
+        printMessage("zoom in");
+        plot_temp.zoom();
+        plot_hum.zoom();
+    });
+
+    $("input.pan_up").click(function () {
+        plot_temp.pan({ top: -10 });
+        plot_hum.pan({ top: -10 });
+    });
+    $("input.pan_down").click(function () {
+        plot_temp.pan({ top: 10 });
+        plot_hum.pan({ top: 10 });
+    });
+    $("input.pan_left").click(function () {
+        plot_temp.pan({ left: -10 });
+        plot_hum.pan({ left: -10 });
+    });
+    $("input.pan_right").click(function () {
+        plot_temp.pan({ left: 10 });
+        plot_hum.pan({ left: 10 });
+    });
+
+
+    $("input.dual_plot").click(function () {
+        dual_plot();
+
+    });
+
+    });
+
+
+    function dual_plot()
+    {
+        //printMessage("begin dual_plot\n");
+	getData();
+    }
+
+    //]]>
+</script><br />
+
+
+<script class="code" type="text/javascript">
+
+$(document).ready(function(){
+
+//  function dual_plot(){
+
+
+
+	getData();
+});
+
+
+
+  // Our ajax data renderer which here retrieves a text file.
+  // it could contact any source and pull data, however.
+  // The options argument isn't used in this renderer.
+  var ajaxDataRenderer = function(url, plot, options) {
+    var ret = null;
+    $.ajax({
+      // have to use synchronous here, else the function 
+      // will return before the data is fetched
+      async: false,
+      url: url,
+      dataType:"json",
+      success: function(data) {
+        ret = data;
+      }
+    });
+    return ret;
+  };
+
+
+
+function getData()
+{
+
+  // The url for our json data
+  //var jsonurl = "./jsondata.txt";
+  var jsonurl = "./humidity.json";
+
+  // passing in the url string as the jqPlot data argument is a handy
+  // shortcut for our renderer.  You could also have used the
+  // "dataRendererOptions" option to pass in the url.
+  var plot2 = $.jqplot('chartArea', jsonurl,{
+    title: "Temperature and Humidity",
+ axes:{
+        xaxis:{
+            dataRenderer:$.jqplot.DateAxisRenderer
+        }
+    },
+    dataRenderer: ajaxDataRenderer,
+    dataRendererOptions: {
+      unusedOptionalUrl: jsonurl
+    }
+  });
+
+};
+
+
+
+</script>
+
+
+<!-- Don't touch this! -->
+    <script class="include" type="text/javascript" src="../lib/jqplot/jquery.jqplot.min.js"></script>
+<!-- End Don't touch this! -->
+
+<!-- Additional plugins go here -->
+    <script class="include" language="javascript" type="text/javascript" src="../lib/jqplot/plugins/jqplot.json2.min.js"></script>
+    <script class="include" language="javascript" type="text/javascript" src="../lib/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+
+
+<!-- End additional plugins -->
+
+
+  </body>
+</html>
+

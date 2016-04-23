@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>jqPlot Test</title>
+
+
+    <link class="include" rel="stylesheet" type="text/css" href="../../lib/jqplot/jquery.jqplot.min.css" />
+
+
+    <script class="include" type="text/javascript" src="../../lib/jqplot/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+    <div id="chart1" style="height:400px;width:900px;"></div>
+
+<script class="code" type="text/javascript">
+
+$(document).ready(function(){
+        ShowGraph1();
+    });
+
+</script>
+
+<script type="text/javascript">
+
+var data2=
+{"min":1322697600000,"max":1325375999000,"data":[[[1322697600000,10],[1323216000000,6.1614],[1323302400000,31.6241],[1323388800000,31.6241],[1323475200000,31.6241],[1323561600000,31.6241],[1323648000000,31.6241],[1323734400000,31.6241],[1323216000000,1.9354],[1323302400000,17.4193],[1323388800000,17.4193],[1323475200000,17.4193],[1323561600000,17.4193],[1323648000000,17.4193],[1323734400000,17.4193],[1325289600000,22]]]};
+
+    function ShowGraph1() {
+
+        $.ajax({ url: "data3.json",
+            dataType: "json",
+            success: function (data) {
+
+                $.jqplot('chart1', data.data, {
+                    axes: {
+                        xaxis: {
+                            min: data.min,
+                            max: data.max,
+                            renderer: $.jqplot.DateAxisRenderer,
+                            rendererOptions: { tickRenderer: $.jqplot.CanvasAxisTickRenderer },
+                            tickInterval: '7 day',
+                            tickOptions: { formatString: '%d %b' }
+                        },
+                        yaxis: { min: 0, tickOptions: { formatString: '%.2f'} }
+                    },
+                    legend: { show: true, location: 'se' },
+                    series: [
+                        { label: 'S1', color: '#FF0000' },
+                        { label: 'S2', color: '#00FF00' },
+                        { label: 'S3', color: '#0000FF' },
+                        { label: 'S4', color: 'yellow'}]
+                }).replot();
+
+            }
+        });
+    }
+
+</script>
+
+
+
+<!-- Don't touch this! -->
+
+
+    <script class="include" type="text/javascript" src="../../lib/jqplot/jquery.jqplot.min.js"></script>
+
+<!-- End Don't touch this! -->
+
+<!-- Additional plugins go here -->
+
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.logAxisRenderer.min.js"></script>
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script>
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+    <script class="include" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.cursor.min.js"></script>
+<!-- End additional plugins -->
+
+</body>
+</html>
+

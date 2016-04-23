@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	
+	<title>AJAX and JSON Data Loading via Data Renderers</title>
+
+    <link class="include" rel="stylesheet" type="text/css" href="../../lib/jqplot/jquery.jqplot.min.css" />
+
+  
+  <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../excanvas.js"></script><![endif]-->
+    <script class="include" type="text/javascript" src="../../lib/jqplot/jquery.min.js"></script>
+    
+   
+</head>
+<body>
+
+
+<div id="chart2" style="height:300px; width:500px;"></div>
+
+
+	<script class="code" type="text/javascript">
+		$(document).ready(function() {
+			// Our ajax data renderer which here retrieves a text file.
+			// it could contact any source and pull data, however.
+			// The options argument isn't used in this renderer.
+			var ajaxDataRenderer = function(url, plot, options) {
+				var ret = null;
+				$.ajax({
+					// have to use synchronous here, else the function 
+					// will return before the data is fetched
+					async : false,
+					url : url,
+					dataType : "json",
+					success : function(data) {
+						ret = data;
+					}
+				});
+				return ret;
+			};
+
+			// The url for our json data
+			var jsonurl = "./jsondata.txt";
+			//var jsonurl = "./humidity.json";
+
+			// passing in the url string as the jqPlot data argument is a handy
+			// shortcut for our renderer.  You could also have used the
+			// "dataRendererOptions" option to pass in the url.
+			var plot2 = $.jqplot('chart2', jsonurl, {
+				title : "AJAX JSON Data Renderer",
+				dataRenderer : ajaxDataRenderer,
+				dataRendererOptions : {
+					unusedOptionalUrl : jsonurl
+				}
+			});
+		});
+	</script>
+
+
+
+	<!-- Don't touch this! -->
+
+
+    <script class="include" type="text/javascript" src="../../lib/jqplot/jquery.jqplot.min.js"></script>
+ 
+<!-- End Don't touch this! -->
+
+<!-- Additional plugins go here -->
+
+    <script class="include" language="javascript" type="text/javascript" src="../../lib/jqplot/plugins/jqplot.json2.min.js"></script>
+
+<!-- End additional plugins -->
+
+
+</body>
+
+</html>
+
