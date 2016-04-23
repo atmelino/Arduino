@@ -1,0 +1,73 @@
+	<form name='myForm'>
+		Name: <input type='text' onChange="ajaxFunction();" name='username' />
+		Start IP: <input type='text' id='startIP' /> <br /> End IP: <input
+			type='text' id='endIP' /> <br /> <br /> Time: <input type='text'
+			name='time' />
+	</form>
+
+				//var age = document.getElementById('startIP').value;
+			//var wpm = document.getElementById('endIP').value;
+	
+				//var queryString = "?age=" + age + "&wpm=" + wpm;
+	
+	
+		/******* Validate IP Address IPv4 *********/
+	function fnValidateIPAddress(ipaddr) {
+		//Remember, this function will validate only Class C IP.
+		//change to other IP Classes as you need
+		ipaddr = ipaddr.replace(/\s/g, "") //remove spaces for checking
+		var re = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/; //regex. check for digits and in
+		//all 4 quadrants of the IP
+		if (re.test(ipaddr)) {
+			//split into units with dots "."
+			var parts = ipaddr.split(".");
+			//if the first unit/quadrant of the IP is zero
+			if (parseInt(parseFloat(parts[0])) == 0) {
+				return false;
+			}
+			//if the fourth unit/quadrant of the IP is zero
+			if (parseInt(parseFloat(parts[3])) == 0) {
+				return false;
+			}
+			//if any part is greater than 255
+			for ( var i = 0; i < parts.length; i++) {
+				if (parseInt(parseFloat(parts[i])) > 255) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	
+					//var myobj = JSON.parse(ajaxRequest);
+				//var s = "<JSON-String>";
+				//JSON.parse(s);
+				//printMessage(response);
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				//var json = ajaxRequest.responseText.evalJSON();
+				//printlnMessage(json);
+
+				
+				//printlnMessage(response[0][0]);
+				//printlnMessage(response[1]);
+				
+				
+				
+								
+				

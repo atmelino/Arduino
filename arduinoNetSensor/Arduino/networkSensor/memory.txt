@@ -1,0 +1,29 @@
+
+
+
+before messages.h:
+
+   text	   data	    bss	    dec	    hex	filename
+  21654	   1122	    740	  23516	   5bdc	networkSensor.cpp.elf
+
+traOnOff messages in progmem:
+
+   text	   data	    bss	    dec	    hex	filename
+  22294	    936	    740	  23970	   5da2	networkSensor.cpp.elf
+
+remaining fields:
+   text	   data	    bss	    dec	    hex	filename
+  23602	    472	    840	  24914	   6152	networkSensor.cpp.elf
+
+add EEPROM save:
+   text	   data	    bss	    dec	    hex	filename
+  23660	    658	    841	  25159	   6247	networkSensor.cpp.elf
+
+New messages:
+   text	   data	    bss	    dec	    hex	filename
+  24652	    728	    895	  26275	   66a3	networkSensor.cpp.elf
+
+EEPROM messages to flash
+   text	   data	    bss	    dec	    hex	filename
+  25838	    478	    895	  27211	   6a4b	networkSensor.cpp.elf
+

@@ -1,0 +1,294 @@
+<html>
+
+<head>
+<style type="text/css">
+body {
+	font-family: verdana, arial, sans-serif;
+	font-size: 12pt;
+	margin: 10px;
+	color: rgb(255, 204, 51);
+	background-color: rgb(51, 102, 102);
+}
+
+a:link {
+	color: yellow
+}
+
+a:visited {
+	color: orange
+}
+</style>
+
+<script type="text/javascript">
+	var plot1;
+	var plotJ;
+	var nowTime;
+	var range_names = [ "Last 10 seconds", "Last minute", "Last 10 minutes",
+			"Last hour", "Last six hours", "Last 24 hours", "Last three days",
+			"Last week", "Last two weeks", "Last month", "Last six months",
+			"Last year", "All" ];
+	var range_numbers = [ 10, 10, 60, 10 * 60, 60 * 60, 6 * 60 * 60,
+			24 * 60 * 60, 3 * 24 * 60 * 60, 7 * 24 * 60 * 60,
+			14 * 24 * 60 * 60, 31 * 24 * 60 * 60, 6 * 31 * 24 * 60 * 60,
+			12 * 31 * 24 * 60 * 60 ];
+	var range_options = [ range_names, range_numbers ];
+	var selIndex;
+	var timeRange = 10;
+	var liveYesNo;
+	var ldchecked;
+	//var IPString;
+	var sensorName;
+	var sensors;
+	var sensorsAjax;
+	var sensorsJSON = new Array();
+
+	function onload_function() {
+
+		//printlnMessage("onload function");
+
+		// restore saved settings from cookies
+		ldchecked = getCookie("livedata");
+		if (ldchecked == 1) {
+			document.getElementById('livedata').checked = true;
+		} else {
+			document.getElementById('livedata').checked = false;
+		}
+
+		//ajaxFunction("a", 7);
+
+		document.getElementById('sensorName').value = getCookie("sensorName");
+
+		for ( var i = 0; i <= range_names.length; i++) {
+			AddItem("rangeComboBox", range_names[i], i);
+			//range_numbers[i] = 1000 * range_numbers[i];
+		}
+		document.getElementById("rangeComboBox").value = getCookie("selIndex") - 1;
+		rangeSelect();
+		refreshIt(); // refresh every x secs
+
+	}
+
+	function AddItem(Element, Text, Value) {
+		// Create an Option object        
+
+		var opt = document.createElement("option");
+
+		// Add an Option object to Drop Down/List Box
+		document.getElementById(Element).options.add(opt);
+
+		// Assign text and value to Option object
+		opt.text = Text;
+		opt.value = Value;
+	}
+
+	function refreshIt() {
+		//printMessage("timer event");
+
+		nowTime = new Date();
+		var today = new Date();
+		var Y = today.getFullYear();
+		var M = today.getMonth() + 1;
+		var D = today.getDate();
+		var h = nowTime.getHours();
+		var m = nowTime.getMinutes();
+		var s = nowTime.getSeconds();
+		document.getElementById('date').innerHTML = M + "-" + D + "-" + Y;
+		document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+
+		if (document.getElementById('livedata').checked) {
+			refreshGraph();
+			//printlnMessage("index:" + selIndex + " val: "+ timeRange );
+		}
+
+		ajaxFunction("Sensors", 7);
+
+		setTimeout('refreshIt()', 1000); // refresh every 5 secs
+	}
+
+	function getRequest() {
+
+		var req = false;
+		req = new XMLHttpRequest();
+		return req;
+
+	}
+
+	function refreshGraph() {
+		img = document.getElementById("cam");
+		sensorName = getCookie("sensorName");
+
+		var mysrc = "graph.php?r=" + timeRange + "&i=" + sensorName;
+		//printlnMessage(mysrc);
+		img.src = mysrc;
+	}
+
+	function rangeSelect() {
+
+		//printMessage("range combo selected");
+		var eSelect = document.getElementById('rangeComboBox');
+
+		selIndex = eSelect.selectedIndex;
+		setCookie("selIndex", selIndex, 365);
+
+		timeRange = range_numbers[selIndex];
+		refreshGraph();
+		//printlnMessage("index:" + selIndex + " val: " + timeRange);
+	}
+
+	function setsensorComboBox(items) {
+		document.getElementById("sensorComboBox").options.length = 0;
+		AddItem("sensorComboBox", "Select Sensor", 0);
+
+		for ( var i = 0; i < items.length; i++) {
+			AddItem("sensorComboBox", items[i], i);
+		}
+		//AddItem("sensorComboBox", items[1], 1);
+		//AddItem("sensorComboBox", items[2], 2);
+
+	}
+
+	function sensorComboSelect() {
+
+		//printMessage("sensor combo selected");
+	   // var elt = document.getElementById("sensorComboBox");
+	    var text = getSelectedText("sensorComboBox");
+		//printMessage(text);
+		document.getElementById('sensorName').value = text;
+		IPEnter();
+
+	}
+	
+	function getSelectedText(elementId) {
+	    var elt = document.getElementById(elementId);
+
+	    if (elt.selectedIndex == -1)
+	        return null;
+
+	    return elt.options[elt.selectedIndex].text;
+	}
+	
+	function liveChanged() {
+		ldchecked = document.getElementById('livedata').checked;
+		//printlnMessage(ldchecked);
+
+		if (ldchecked == true) {
+			setCookie("livedata", 1, 365);
+		} else {
+			setCookie("livedata", 0, 365);
+		}
+	}
+
+	function IPEnter() {
+		sensorName = document.getElementById('sensorName').value;
+		setCookie("sensorName", sensorName, 365);
+		//printlnMessage(sensorName);
+	}
+
+	function printMessage(message) {
+		document.getElementById('message').innerHTML += message;
+		var textarea = document.getElementById('message');
+		textarea.scrollTop = textarea.scrollHeight;
+	}
+
+	function printlnMessage(message) {
+		document.getElementById('message').innerHTML += message + '\n';
+		var textarea = document.getElementById('message');
+		textarea.scrollTop = textarea.scrollHeight;
+	}
+
+	function getCookie(c_name) {
+		var i, x, y, ARRcookies = document.cookie.split(";");
+		for (i = 0; i < ARRcookies.length; i++) {
+			x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+			y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+			x = x.replace(/^\s+|\s+$/g, "");
+			if (x == c_name) {
+				return unescape(y);
+			}
+		}
+	}
+
+	function setCookie(c_name, value, exdays) {
+		var exdate = new Date();
+		exdate.setDate(exdate.getDate() + exdays);
+		var c_value = escape(value)
+				+ ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+		document.cookie = c_name + "=" + c_value;
+	}
+
+	function ajaxFunction(mode, param1) {
+		var ajaxRequest; // The variable that makes Ajax possible!
+
+		//printlnMessage("ajaxFunction() called");
+
+		try {
+			// Opera 8.0+, Firefox, Safari
+			ajaxRequest = new XMLHttpRequest();
+		} catch (e) {
+			// Internet Explorer Browsers
+			try {
+				ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch (e) {
+				try {
+					ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+				} catch (e) {
+					// Something went wrong
+					alert("Your browser broke!");
+					return false;
+				}
+			}
+		}
+		// Create a function that will receive data sent from the server
+		ajaxRequest.onreadystatechange = function() {
+			if (ajaxRequest.readyState == 4) {
+				//printlnMessage("ajaxFunction() statechange called");
+				sensorsAjax = ajaxRequest.responseText;
+				//printlnMessage(sensorsAjax);
+				sensorsJSON = JSON.parse(sensorsAjax);
+				//printlnMessage(sensorsJSON[1]);
+				//printlnMessage(sensorsJSON.length);
+
+				setsensorComboBox(sensorsJSON);
+			}
+		}
+
+		ajaxRequest.open("GET", "DBfunctions.php?t=1", true);
+		ajaxRequest.send(null);
+	}
+
+</script>
+</head>
+
+<body onload=" onload_function()" link="#0000EE" vlink="#551A8B"
+	alink="#EE0000">
+	<table border="0">
+		<tr>
+			<td>
+				<form>
+					<select id="sensorComboBox" onchange="sensorComboSelect()">
+						<option>Select Device</option>
+					</select>
+				</form>Name: <textarea rows="1" cols="12" name="sensorName" id="sensorName"
+					onchange="IPEnter()"></textarea><br> Type: <textarea rows="1"
+					cols="10" id="sensortype"></textarea><br> Date: <textarea
+					rows="1" cols="10" id="date"></textarea><br>Time: <textarea
+					rows="1" cols="10" id="time"></textarea>
+				<form>
+					Live Data <input type="checkbox" id="livedata"
+						onchange="liveChanged()"><br>
+				</form>
+				<form>
+					<select id="rangeComboBox" onchange="rangeSelect()">
+						<option>Select Range</option>
+					</select>
+				</form> <textarea rows="15" cols="20" id="message"></textarea>
+			</td>
+			<td><img id=cam></td>
+		</tr>
+	</table>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,122 @@
+//if(varChanged==true){
+//Serial.println("variable changed");
+//varChanged=false;
+//}
+
+  //s1=serverip[0];
+  //s2=serverip[1];
+  //s3=serverip[2];
+  //s4=serverip[3];
+
+  //temperature = 5;
+  //humidity = 4;
+  //  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+  /*
+  if(strcmp(iwp,varName)==0)
+   intervalPage=parsenumber;
+   if(strcmp(st1,varName)==0)
+   s1=parsenumber;
+   if(strcmp(st2,varName)==0)
+   s2=parsenumber;
+   if(strcmp(st3,varName)==0)
+   s3=parsenumber;
+   if(strcmp(st4,varName)==0)
+   s4=parsenumber;
+   if(strcmp(fre,varName)==0)
+   intervalPHP=parsenumber;
+   if(strcmp(tra,varName)==0)
+   traOnOff=(parsenumber==1?true:false);
+   
+   */
+//while('\0'!=(c=EEPROM.read(address++))){
+
+
+  //Serial.print("Humidity: ");
+  //Serial.print(fhumidity);
+  //Serial.println();
+  //Serial.print("Temperature: ");
+  //Serial.print(tBuffer);
+  //Serial.print(" Humidity: ");
+  //Serial.print(hBuffer);
+  //Serial.println();
+
+    //Serial.println("intervalPage changed, saving to EEPROM");
+    //Serial.println("s1 changed, saving to EEPROM");
+    //Serial.println("s2 changed, saving to EEPROM");
+    //Serial.println("s3 changed, saving to EEPROM");
+    //Serial.println("s4 changed, saving to EEPROM");
+    //Serial.println("intervalPHP changed, saving to EEPROM");
+
+      //      EEPROM.write(address+1, source[1]);
+      //    EEPROM.write(address+2, source[2]);
+
+
+  //int len=10;
+  //for(int i=0;i<len;i++)
+  //{
+  //c=EEPROM.read(address++);
+  //dest[i]=c;
+  // }
+
+
+
+  //Serial.print("string length ");
+  //Serial.println(len);
+
+
+
+
+//char serverscript[50]="/arduinoTempHumid/ArduinoCall.php";
+
+
+
+
+//char* pageMessage;
+boolean traOnOff=true;
+
+
+//boolean varChanged=false; // only write to EEPROM if a value has changed
+
+
+/*    int i=0; // index for parser variable
+    int j=0; // index for result string 
+    while(i<stringVarIndex){
+      if(stringVar[i]=='%'){
+        serverscript[j]='/';
+        i+=3;
+        //stringVarIndex-=2;
+        j++;  
+      }
+      else
+      {
+        serverscript[j]=stringVar[i];
+        i++;
+        j++;
+      }
+    }
+    serverscript[j]='\0';  
+*/
+
+
+
+    //Serial.print("stringVar=");
+    //Serial.println(stringVar);
+
+
+
+  //Serial.println(strlen(serverscript));
+
+
+
+    Serial.print(seconds);
+
+
+  //Serial.println("EEPROMSaveValues called");
+
+
+/arduinoNetSensor/html/ArduinoCall.php
+
+
+
+
+

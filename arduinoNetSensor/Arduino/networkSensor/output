@@ -1,0 +1,792 @@
+Program: networkSensor 03-19-2013
+My IP address: 11.0.0.17.
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= officfg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: o 6f
+comparison address: 20 EEPROM: f 66 var: f 66
+comparison address: 21 EEPROM: f 66 var: f 66
+comparison address: 22 EEPROM: i 69 var: i 69
+comparison address: 23 EEPROM: c 63 var: c 63
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+parser assign values
+Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: o 6f var: a 61
+writing to EEPROM: 97 count: 0
+comparison address: 20 EEPROM: f 66 var: b 62
+writing to EEPROM: 98 count: 1
+comparison address: 21 EEPROM: f 66 var: c 63
+writing to EEPROM: 99 count: 2
+comparison address: 22 EEPROM: i 69 var: d 64
+writing to EEPROM: 100 count: 3
+comparison address: 23 EEPROM: c 63 var: e 65
+writing to EEPROM: 101 count: 4
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+writing to EEPROM: 0 count: 5
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+parser assign values
+Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= abcdefg
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: a 61
+comparison address: 20 EEPROM: b 62 var: b 62
+comparison address: 21 EEPROM: c 63 var: c 63
+comparison address: 22 EEPROM: d 64 var: d 64
+comparison address: 23 EEPROM: e 65 var: e 65
+comparison address: 24 EEPROM: f 66 var: f 66
+comparison address: 25 EEPROM: g 67 var: g 67
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+parser assign values
+Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= poiuytre
+arduinoID= office02
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= poiuytre
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: a 61 var: p 70
+writing to EEPROM: 112 count: 6
+comparison address: 20 EEPROM: b 62 var: o 6f
+writing to EEPROM: 111 count: 7
+comparison address: 21 EEPROM: c 63 var: i 69
+writing to EEPROM: 105 count: 8
+comparison address: 22 EEPROM: d 64 var: u 75
+writing to EEPROM: 117 count: 9
+comparison address: 23 EEPROM: e 65 var: y 79
+writing to EEPROM: 121 count: 10
+comparison address: 24 EEPROM: f 66 var: t 74
+writing to EEPROM: 116 count: 11
+comparison address: 25 EEPROM: g 67 var: r 72
+writing to EEPROM: 114 count: 12
+comparison address: 26 EEPROM: 
+writing to EEPROM: 101 count: 13
+writing to EEPROM: 0 count: 14
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= poiuytre
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: p 70 var: p 70
+comparison address: 20 EEPROM: o 6f var: o 6f
+comparison address: 21 EEPROM: i 69 var: i 69
+comparison address: 22 EEPROM: u 75 var: u 75
+comparison address: 23 EEPROM: y 79 var: y 79
+comparison address: 24 EEPROM: t 74 var: t 74
+comparison address: 25 EEPROM: r 72 var: r 72
+comparison address: 26 EEPROM: e 65 var: e 65
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= poiuytre
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: p 70 var: p 70
+comparison address: 20 EEPROM: o 6f var: o 6f
+comparison address: 21 EEPROM: i 69 var: i 69
+comparison address: 22 EEPROM: u 75 var: u 75
+comparison address: 23 EEPROM: y 79 var: y 79
+comparison address: 24 EEPROM: t 74 var: t 74
+comparison address: 25 EEPROM: r 72 var: r 72
+comparison address: 26 EEPROM: e 65 var: e 65
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= poiuytre
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: p 70 var: p 70
+comparison address: 20 EEPROM: o 6f var: o 6f
+comparison address: 21 EEPROM: i 69 var: i 69
+comparison address: 22 EEPROM: u 75 var: u 75
+comparison address: 23 EEPROM: y 79 var: y 79
+comparison address: 24 EEPROM: t 74 var: t 74
+comparison address: 25 EEPROM: r 72 var: r 72
+comparison address: 26 EEPROM: e 65 var: e 65
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= poiuytre
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: p 70 var: p 70
+comparison address: 20 EEPROM: o 6f var: o 6f
+comparison address: 21 EEPROM: i 69 var: i 69
+comparison address: 22 EEPROM: u 75 var: u 75
+comparison address: 23 EEPROM: y 79 var: y 79
+comparison address: 24 EEPROM: t 74 var: t 74
+comparison address: 25 EEPROM: r 72 var: r 72
+comparison address: 26 EEPROM: e 65 var: e 65
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+.Variables:
+intervalPage= 50
+IP=11.0.0.100
+intervalPHP= 15
+traOnOff= 0
+serverscript= poiuytre
+arduinoID= office02
+save serverscript: 
+comparison address: 19 EEPROM: p 70 var: p 70
+comparison address: 20 EEPROM: o 6f var: o 6f
+comparison address: 21 EEPROM: i 69 var: i 69
+comparison address: 22 EEPROM: u 75 var: u 75
+comparison address: 23 EEPROM: y 79 var: y 79
+comparison address: 24 EEPROM: t 74 var: t 74
+comparison address: 25 EEPROM: r 72 var: r 72
+comparison address: 26 EEPROM: e 65 var: e 65
+save arduinoID
+comparison address: 69 EEPROM: o 6f var: o 6f
+comparison address: 70 EEPROM: f 66 var: f 66
+comparison address: 71 EEPROM: f 66 var: f 66
+comparison address: 72 EEPROM: i 69 var: i 69
+comparison address: 73 EEPROM: c 63 var: c 63
+comparison address: 74 EEPROM: e 65 var: e 65
+comparison address: 75 EEPROM: 0 30 var: 0 30
+comparison address: 76 EEPROM: 2 32 var: 2 32
+

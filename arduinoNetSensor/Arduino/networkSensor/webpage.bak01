@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<meta http-equiv="refresh" content="100">
+<meta http-equiv="refresh" content="100">
+<head>
+<title>ARD0001</title>
+</head>
+<body onload="onload_function()" style="color: rgb(0, 0, 0); background-color: rgb(51, 102, 102);">
+<script type="text/javascript">
+function onload_function() {
+
+document.getElementById("bti").value='16',
+document.getElementById("iwp").value='100',
+document.getElementById("tem").value='78.77',
+document.getElementById("hum").value='40.87',
+document.getElementById("ip1").value='14',
+document.getElementById("ip2").value='2',
+document.getElementById("ip3").value='1',
+document.getElementById("ip4").value='123',
+document.getElementById("fre").value='15',
+document.getElementById("scr").value='/arduinoNetSensor/html/ArduinoCall.php';
+document.getElementById("traOn").checked = false;
+document.getElementById("traOff").checked = true;
+}
+</script>
+</script>
+<font color=white>
+<h1 align=center> My hiTECH Systems Arduino Ethernet sensors</h1><hr>
+<h3>System</h3>
+<form name=inputscript method=get>
+ID: ARD
+<input type=text name=ardid id=ardid value=0 size=10>
+<br>Time since boot: 
+<textarea type=text name=time id=bti  value=0 size=8></textarea>
+seconds<br>Refresh every
+<input name=intervalPage id=iwp value=20 size=6> seconds
+<br><input value=Submit type=submit></form>
+<hr>
+<br>Temperature
+<input type=text name=time id=tem  value=0 size=8>
+Humidity
+<input type=text name=time id=hum  value=0 size=8>
+<hr><h3>Database Server Configuration</h3>
+<form name=inputserverip method=get>
+Server IP: 
+<input type=text name=serverip1 id= ip1 value=10 size=2>
+<input type=text name=serverip2 id= ip2 value= 0 size=2>
+<input type=text name=serverip3 id= ip3 value= 0 size=2>
+<input type=text name=serverip4 id= ip4 value=100 size=2>
+<input type=submit value=Submit>
+</form>
+<form name=inputscript method=get>
+Server script path: 
+<input type=text name=serverscript id=scr value=/arduinoTempHumid/ArduinoCall.php size=40>
+<input type=submit value=Submit>
+</form>
+<form name=inputscript method=get>
+Data transmission frequency:
+<input name=intervalPHP id=fre value=5 size=6> seconds <input value=Submit type=submit> </form>
+<form> Data transmission start<br>
+<input type=radio name=transmission id=traOn value=1>On<br>
+<input type=radio name=transmission id=traOff value=0>Off<br>
+<input type=submit value=Submit>
+</form><hr>
+<br>
+</font>
+
+</body>
+</html>
+Refresh interval saved to EEPROM
+

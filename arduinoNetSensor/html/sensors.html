@@ -1,0 +1,167 @@
+<html>
+<body>
+
+	<script type="text/javascript">
+		var startipaddr;
+		var startipaddrpart;
+
+		//Browser Support Code
+		function ajaxFunction(mode, param1) {
+			var ajaxRequest; // The variable that makes Ajax possible!
+
+			//printlnMessage("ajaxFunction() called");
+
+			try {
+				// Opera 8.0+, Firefox, Safari
+				ajaxRequest = new XMLHttpRequest();
+			} catch (e) {
+				// Internet Explorer Browsers
+				try {
+					ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+				} catch (e) {
+					try {
+						ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+					} catch (e) {
+						// Something went wrong
+						alert("Your browser broke!");
+						return false;
+					}
+				}
+			}
+			// Create a function that will receive data sent from the server
+			ajaxRequest.onreadystatechange = function() {
+				if (ajaxRequest.readyState == 4) {
+					//document.myForm.time.value = ajaxRequest.responseText;
+
+					if (mode == "getIPwlan0") {
+						var ipaddr = ajaxRequest.responseText;
+						var ipoctets = new Array();
+						ipoctets = ipaddr.split(/\./g);
+						startipaddrpart = ipoctets[0] + '.' + ipoctets[1] + '.'
+								+ ipoctets[2] + '.';
+						startipaddr = startipaddrpart + '0';
+						document.getElementById('thisIPw').innerHTML = ipaddr;
+						document.getElementById('startIP').innerHTML = startipaddr;
+
+					}
+					if (mode == "getIPeth0") {
+						var ipaddr = ajaxRequest.responseText;
+						var ipoctets = new Array();
+						ipoctets = ipaddr.split(/\./g);
+						startipaddrpart = ipoctets[0] + '.' + ipoctets[1] + '.'
+								+ ipoctets[2] + '.';
+						startipaddr = startipaddrpart + '0';
+						document.getElementById('thisIPe').innerHTML = ipaddr;
+						document.getElementById('startIP').innerHTML = startipaddr;
+					}
+					if (mode == "scanIP") {
+						var response = ajaxRequest.responseText;
+						printMessage(response);
+						if (response.indexOf('ARD') !== -1) {
+							addDiv(response);
+							//alert(response);
+						}
+					}
+				}
+			}
+
+			if (mode == "scanIP") {
+				//printlnMessage("ajaxFunction(): i");
+				var queryString = "?i=" + param1;
+			}
+			if (mode == "getIPeth0") {
+				//printlnMessage("ajaxFunction(): e");
+				var queryString = "?e=" + param1;
+			}
+			if (mode == "getIPwlan0") {
+				//printlnMessage("ajaxFunction(): w");
+				var queryString = "?w=" + param1;
+			}
+			ajaxRequest.open("GET", "scanIP.php" + queryString, true);
+
+			//ajaxRequest.open("GET", "scanIP.php?i=123", true);
+			ajaxRequest.send(null);
+		}
+
+		function getThisComputerIPeth0() {
+			//printlnMessage("getThisComputerIPe() called");
+			ajaxFunction("getIPeth0", 0);
+		}
+
+		function getThisComputerIPwlan0() {
+			//printlnMessage("getThisComputerIPw() called");
+			ajaxFunction("getIPwlan0", 0);
+		}
+
+		function ScanforSensors() {
+			for ( var i = 0; i < 150; i++) {
+
+				//printlnMessage("ScanforSensors() called");
+				//ajaxFunction("scanIP", i);
+				//ajaxFunction("scanIP", "10.0.0.11");
+				//ajaxFunction("scanIP", '10.0.0.' + i);
+				ajaxFunction("scanIP", startipaddrpart + i);
+
+			}
+		}
+
+		function lastoctet(ipaddress) {
+			var ipoctets = new Array();
+
+			ipoctets = ipaddress.split(/\./g);
+			alert(ipoctets);
+		}
+
+		function printMessage(message) {
+			document.getElementById('messages').innerHTML += message;
+			//document.getElementById('messages').scrollTop = 100;
+			document.getElementById('messages').scrollTop = document
+					.getElementById('messages').scrollHeight;
+		}
+
+		function printlnMessage(message) {
+			printMessage(message);
+			document.getElementById('messages').innerHTML += '\n';
+			var a1 = document.getElementById('messages').scrollHeight;
+			document.getElementById('messages').innerHTML += a1;
+			//var a2 = document.getElementById('messages').clientHeight;
+			//document.getElementById('messages').scrollTop = a2 - a1;
+			//document.getElementById('messages').scrollTop = 100;
+		}
+
+		function addDiv(mylink) {
+			var a = document.createElement('a');
+			var linkText = document.createTextNode("Arduino Sensor at "
+					+ mylink);
+			a.appendChild(linkText);
+			a.title = "Arduino Sensor" + mylink;
+			var ardaddress = mylink.substr(0, mylink.indexOf(':'));
+			//alert(ardaddress);
+			a.href = "http://"+ardaddress;
+			var objTo = document.getElementById('container')
+			var divtest = document.createElement("div");
+			divtest.appendChild(a);
+			objTo.appendChild(divtest)
+		}
+	</script>
+
+
+	<button onclick="getThisComputerIPeth0()">Internet IP of
+		Ethernet interface of this computer:</button>
+	<textarea name="thisIPe" id=thisIPe rows="1" cols="14"></textarea>
+	<br>
+	<button onclick="getThisComputerIPwlan0()">Internet IP of WLAN
+		interface of this computer:</button>
+	<textarea name="thisIPw" id=thisIPw rows="1" cols="14"></textarea>
+	<br>
+	<button onclick="ScanforSensors()">Scan for Sensors</button>
+	starting at
+	<textarea name="startIP" id=startIP rows="1" cols="14"></textarea>
+	<br>
+
+	<div id="container"></div>
+
+
+	<textarea name="messages" id=messages rows="20" cols="80"></textarea>
+</body>
+</html>
