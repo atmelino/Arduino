@@ -1,0 +1,832 @@
+Commits on Mar 4, 2013
+@atmelino
+temp, humid float not int
+atmelino committed on Mar 4, 2013
+969ad27  
+Commits on Mar 3, 2013
+@atmelino
+IP of device = table name
+atmelino committed on Mar 3, 2013
+246dc99  
+@atmelino
+IP of device = table name
+atmelino committed on Mar 3, 2013
+f96e61b  
+Commits on Mar 1, 2013
+@atmelino
+IP of device = table name
+atmelino committed on Mar 1, 2013
+f0a261e  
+Commits on Feb 28, 2013
+@atmelino
+IP of device = table name
+atmelino committed on Feb 28, 2013
+614389a  
+@atmelino
+IP of device = table name
+atmelino committed on Feb 28, 2013
+7e3de88  
+@atmelino
+IP of device = table name
+atmelino committed on Feb 28, 2013
+17cb42e  
+Commits on Feb 27, 2013
+@atmelino
+IP of device = table name
+atmelino committed on Feb 27, 2013
+f937bb5  
+@atmelino
+IP of device = table name
+atmelino committed on Feb 27, 2013
+3fb2066  
+Commits on Feb 26, 2013
+@atmelino
+IP of device = table name
+atmelino committed on Feb 26, 2013
+f1eef70  
+@atmelino
+web site remember settings (cookies)
+atmelino committed on Feb 26, 2013
+aa05c50  
+Commits on Feb 25, 2013
+@atmelino
+IP based database tables
+atmelino committed on Feb 25, 2013
+af42f25  
+@atmelino
+IP based database tables
+atmelino committed on Feb 25, 2013
+e62a785  
+@atmelino
+reorganize
+atmelino committed on Feb 25, 2013
+5ebf515  
+@atmelino
+reorganize
+atmelino committed on Feb 25, 2013
+7b2119b  
+@atmelino
+reorganize
+atmelino committed on Feb 25, 2013
+bf6d157  
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 25, 2013
+d014941  
+Commits on Feb 24, 2013
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 24, 2013
+236f7ca  
+Commits on Feb 23, 2013
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 23, 2013
+8613f9b  
+Commits on Feb 22, 2013
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 22, 2013
+1813cfe  
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 22, 2013
+0a27460  
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 22, 2013
+348f0d5  
+Commits on Feb 21, 2013
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 21, 2013
+e7bd9fc  
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 21, 2013
+2130b10  
+Commits on Feb 20, 2013
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 20, 2013
+d4e760e  
+Commits on Feb 19, 2013
+@atmelino
+jpgraph parameters
+atmelino committed on Feb 19, 2013
+de29a09  
+@atmelino
+jpgraph x axis date format
+atmelino committed on Feb 19, 2013
+fd9241e  
+@atmelino
+reorganize
+atmelino committed on Feb 19, 2013
+42da425  
+@atmelino
+reorganize
+atmelino committed on Feb 19, 2013
+9994197  
+@atmelino
+reorganize
+atmelino committed on Feb 19, 2013
+a25e422  
+Commits on Feb 18, 2013
+@atmelino
+jpgraph
+atmelino committed on Feb 18, 2013
+4a91903  
+@atmelino
+jpgraph
+atmelino committed on Feb 18, 2013
+1267ac0  
+@atmelino
+jpgraph
+atmelino committed on Feb 18, 2013
+7699034  
+@atmelino
+jpgraph
+atmelino committed on Feb 18, 2013
+e79b607  
+@atmelino
+jpgraph
+atmelino committed on Feb 18, 2013
+6209659  
+NewerOlder
+
+
+Branch: master 
+Commits on Feb 18, 2013
+@atmelino
+jpgraph
+atmelino committed on Feb 18, 2013
+17496c4  
+@atmelino
+jpgraph
+atmelino committed on Feb 18, 2013
+bf14f83  
+Commits on Feb 17, 2013
+@atmelino
+jpgraph
+atmelino committed on Feb 17, 2013
+876e5d3  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+5cf559d  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+875672c  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+157e201  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+6d13fb3  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+b02abc1  
+@atmelino
+add fonts dir
+atmelino committed on Feb 17, 2013
+bc4e0d1  
+@atmelino
+jpgraph
+atmelino committed on Feb 17, 2013
+42c2c4c  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+34a9b32  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+b17becb  
+@atmelino
+jpgraph works
+atmelino committed on Feb 17, 2013
+911a7f7  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+79d92cb  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+4e7b183  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+8efb3d8  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+b45025e  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+bd4c31b  
+@atmelino
+reorganize
+atmelino committed on Feb 17, 2013
+5b5783d  
+Commits on Feb 16, 2013
+@atmelino
+phpgraphlib
+atmelino committed on Feb 16, 2013
+7e7beee  
+Commits on Feb 15, 2013
+@atmelino
+phpgraphlib
+atmelino committed on Feb 15, 2013
+7cf9f0e  
+@atmelino
+phpgraphlib
+atmelino committed on Feb 15, 2013
+6027197  
+Commits on Feb 14, 2013
+@atmelino
+jpgraph
+atmelino committed on Feb 14, 2013
+8397aa9  
+Commits on Feb 13, 2013
+@atmelino
+jpgraph
+atmelino committed on Feb 13, 2013
+719a38c  
+@atmelino
+cacti
+atmelino committed on Feb 13, 2013
+5305336  
+@atmelino
+jpgraph
+atmelino committed on Feb 13, 2013
+22b34b1  
+Commits on Feb 10, 2013
+@atmelino
+plot web pages: no data loop on server
+atmelino committed on Feb 10, 2013
+efc89c9  
+@atmelino
+add humidity parameter
+atmelino committed on Feb 10, 2013
+711290c  
+@atmelino
+add humidity parameter
+atmelino committed on Feb 10, 2013
+7c28fc4  
+@atmelino
+not enough SRAM
+atmelino committed on Feb 10, 2013
+15f35f9  
+Commits on Feb 8, 2013
+@atmelino
+page refresh
+atmelino committed on Feb 8, 2013
+f0891d0  
+Commits on Feb 7, 2013
+@atmelino
+page refresh
+atmelino committed on Feb 7, 2013
+79487f2  
+Commits on Feb 6, 2013
+@atmelino
+page refresh
+atmelino committed on Feb 6, 2013
+d0264d8  
+Commits on Feb 5, 2013
+@atmelino
+add PHP file path
+atmelino committed on Feb 5, 2013
+bd3bb70  
+Commits on Feb 4, 2013
+@atmelino
+web page fields
+atmelino committed on Feb 4, 2013
+c905269  
+NewerOlder
+
+
+
+Branch: master 
+Commits on Feb 3, 2013
+@atmelino
+reorganize
+atmelino committed on Feb 3, 2013
+4fbfd5a  
+@atmelino
+add PHP file path
+atmelino committed on Feb 3, 2013
+e02db15  
+@atmelino
+add PHP file path
+atmelino committed on Feb 3, 2013
+a4203cf  
+@atmelino
+reorganize
+atmelino committed on Feb 3, 2013
+c52bf5d  
+@atmelino
+monitor PHP log
+atmelino committed on Feb 3, 2013
+aeda5b9  
+@atmelino
+reorganize
+atmelino committed on Feb 3, 2013
+7a2ca59  
+Commits on Feb 2, 2013
+@atmelino
+reorganize
+atmelino committed on Feb 2, 2013
+b219ab9  
+@atmelino
+reorganize
+atmelino committed on Feb 2, 2013
+ac80de5  
+Commits on Feb 1, 2013
+@atmelino
+reorganize
+atmelino committed on Feb 1, 2013
+a7fdc8b  
+@atmelino
+reorganize
+atmelino committed on Feb 1, 2013
+4379f6e  
+@atmelino
+reorganize
+atmelino committed on Feb 1, 2013
+46dec0e  
+@atmelino
+transmission initiated from Arduino, config on Arduino page
+atmelino committed on Feb 1, 2013
+84755da  
+@atmelino
+transmission initiated from Arduino, config on Arduino page
+atmelino committed on Feb 1, 2013
+6da8eae  
+Commits on Jan 31, 2013
+@atmelino
+new Arduino address
+atmelino committed on Jan 31, 2013
+7b69943  
+@atmelino
+arduino code fix parser
+atmelino committed on Jan 31, 2013
+b43fa10  
+Commits on Jan 30, 2013
+@atmelino
+arduino code strings in Flash, not SRAM (only 1024 B available)
+atmelino committed on Jan 30, 2013
+323264b  
+Commits on Jan 28, 2013
+@atmelino
+php
+atmelino committed on Jan 28, 2013
+404db0d  
+@atmelino
+php
+atmelino committed on Jan 28, 2013
+6ff1a23  
+@atmelino
+php
+atmelino committed on Jan 28, 2013
+4295045  
+@atmelino
+php
+atmelino committed on Jan 28, 2013
+4f97eaa  
+Commits on Jan 25, 2013
+@atmelino
+php
+atmelino committed on Jan 25, 2013
+eb85296  
+Commits on Jan 23, 2013
+@atmelino
+php
+atmelino committed on Jan 23, 2013
+d379ac3  
+Commits on Jan 20, 2013
+@atmelino
+php
+atmelino committed on Jan 20, 2013
+f937e99  
+Commits on Jan 18, 2013
+@atmelino
+php
+atmelino committed on Jan 18, 2013
+385fea6  
+@atmelino
+php
+atmelino committed on Jan 18, 2013
+b00e923  
+Commits on Jan 17, 2013
+@atmelino
+php
+atmelino committed on Jan 17, 2013
+22f115c  
+@atmelino
+php
+atmelino committed on Jan 17, 2013
+6adccf9  
+@atmelino
+php
+atmelino committed on Jan 17, 2013
+e3281cf  
+Commits on Jan 16, 2013
+@atmelino
+php
+atmelino committed on Jan 16, 2013
+5ecf199  
+@atmelino
+php
+atmelino committed on Jan 16, 2013
+e0e759e  
+Commits on Jan 15, 2013
+@atmelino
+php
+atmelino committed on Jan 15, 2013
+ad78635  
+@atmelino
+php
+atmelino committed on Jan 15, 2013
+1804e3a  
+Commits on Jan 14, 2013
+@atmelino
+php
+atmelino committed on Jan 14, 2013
+1360c8a  
+Commits on Jan 13, 2013
+@atmelino
+php
+atmelino committed on Jan 13, 2013
+aea7583  
+@atmelino
+php
+atmelino committed on Jan 13, 2013
+7b302e2  
+NewerOlder
+
+
+
+Branch: master 
+Commits on Jan 12, 2013
+@atmelino
+php
+atmelino committed on Jan 12, 2013
+d594241  
+Commits on Jan 9, 2013
+@atmelino
+php
+atmelino committed on Jan 9, 2013
+6e7e6ef  
+Commits on Jan 8, 2013
+@atmelino
+php
+atmelino committed on Jan 8, 2013
+0a694cd  
+Commits on Jan 7, 2013
+@atmelino
+php
+atmelino committed on Jan 7, 2013
+3f03b1b  
+Commits on Jan 6, 2013
+@atmelino
+php
+atmelino committed on Jan 6, 2013
+4b52c22  
+@atmelino
+php
+atmelino committed on Jan 6, 2013
+197e943  
+Commits on Jan 5, 2013
+@atmelino
+php
+atmelino committed on Jan 5, 2013
+7a635d9  
+@atmelino
+php
+atmelino committed on Jan 5, 2013
+8b05d05  
+Commits on Jan 4, 2013
+@atmelino
+php
+atmelino committed on Jan 4, 2013
+27998b4  
+@atmelino
+php
+atmelino committed on Jan 4, 2013
+11b8f1d  
+@atmelino
+php
+atmelino committed on Jan 4, 2013
+15bef50  
+Commits on Jan 3, 2013
+@atmelino
+php
+atmelino committed on Jan 3, 2013
+3887da7  
+@atmelino
+php
+atmelino committed on Jan 3, 2013
+bf2f414  
+@atmelino
+php
+atmelino committed on Jan 3, 2013
+35159fa  
+Commits on Jan 2, 2013
+@atmelino
+php
+atmelino committed on Jan 2, 2013
+7c62402  
+@atmelino
+php
+atmelino committed on Jan 2, 2013
+54fb40e  
+@atmelino
+php
+atmelino committed on Jan 2, 2013
+5d00594  
+Commits on Jan 1, 2013
+@atmelino
+php
+atmelino committed on Jan 1, 2013
+fb87707  
+@atmelino
+php
+atmelino committed on Jan 1, 2013
+36cda91  
+@atmelino
+php
+atmelino committed on Jan 1, 2013
+eb85331  
+@atmelino
+php
+atmelino committed on Jan 1, 2013
+9ba549a  
+Commits on Dec 31, 2012
+@atmelino
+php
+atmelino committed on Dec 31, 2012
+22bbe95  
+@atmelino
+php
+atmelino committed on Dec 31, 2012
+3a253b4  
+Commits on Dec 30, 2012
+@atmelino
+php
+atmelino committed on Dec 30, 2012
+4eea448  
+Commits on Dec 29, 2012
+@atmelino
+php
+atmelino committed on Dec 29, 2012
+e44245f  
+Commits on Dec 25, 2012
+
+data store in mysql database
+atmelino committed on Dec 25, 2012
+b44b560  
+Commits on Dec 24, 2012
+
+data store in mysql database
+atmelino committed on Dec 24, 2012
+5a76e40  
+
+data store in mysql database
+atmelino committed on Dec 24, 2012
+a62e770  
+
+data store in mysql database
+atmelino committed on Dec 24, 2012
+926a510  
+Commits on Dec 22, 2012
+
+data store in mysql database
+atmelino committed on Dec 22, 2012
+1fc745b  
+
+data store in mysql database
+atmelino committed on Dec 22, 2012
+7e89862  
+Commits on Dec 21, 2012
+
+data store in mysql database
+atmelino committed on Dec 21, 2012
+b78cfc5  
+
+data store in mysql database
+atmelino committed on Dec 21, 2012
+cf15bb8  
+Commits on Dec 20, 2012
+
+data store in mysql database
+atmelino committed on Dec 20, 2012
+78f7414  
+
+data store in mysql database
+atmelino committed on Dec 20, 2012
+88bf818  
+NewerOlder
+
+
+
+
+
+
+
+
+Branch: master 
+Commits on Dec 19, 2012
+
+switch to jqplot
+atmelino committed on Dec 19, 2012
+3327d02  
+
+switch to jqplot
+atmelino committed on Dec 19, 2012
+1e779f9  
+
+switch to jqplot
+atmelino committed on Dec 19, 2012
+bc0c44c  
+Commits on Dec 18, 2012
+
+switch to jqplot
+atmelino committed on Dec 18, 2012
+9596f10  
+
+switch to jqplot
+atmelino committed on Dec 18, 2012
+c2cb6cc  
+
+switch to jqplot
+atmelino committed on Dec 18, 2012
+fb48428  
+Commits on Dec 17, 2012
+
+switch to jqplot
+atmelino committed on Dec 17, 2012
+87aced0  
+
+switch to jqplot
+atmelino committed on Dec 17, 2012
+bcb1efb  
+Commits on Dec 16, 2012
+
+switch to jqplot
+atmelino committed on Dec 16, 2012
+b636570  
+
+switch to jqplot
+atmelino committed on Dec 16, 2012
+89fdb63  
+Commits on Dec 14, 2012
+
+fix HTML plot
+atmelino committed on Dec 14, 2012
+5c50dd8  
+
+new plot library
+atmelino committed on Dec 14, 2012
+1b806f6  
+Commits on Dec 13, 2012
+
+fix HTML plot
+atmelino committed on Dec 13, 2012
+fe98827  
+
+fix HTML plot
+atmelino committed on Dec 13, 2012
+0f9dd01  
+
+j
+atmelino committed on Dec 13, 2012
+ae42b26  
+
+j
+atmelino committed on Dec 13, 2012
+72fd5be  
+
+readme
+atmelino committed on Dec 13, 2012
+69134e4  
+
+readme
+atmelino committed on Dec 13, 2012
+6e8a930  
+Commits on Dec 12, 2012
+
+readme
+atmelino committed on Dec 12, 2012
+071568e  
+
+readme
+atmelino committed on Dec 12, 2012
+49b6d19  
+
+fix HTML plot
+atmelino committed on Dec 12, 2012
+0cc5004  
+
+fix HTML plot
+atmelino committed on Dec 12, 2012
+67f632b  
+
+fix HTML plot
+atmelino committed on Dec 12, 2012
+9a1c439  
+
+fix HTML plot
+atmelino committed on Dec 12, 2012
+786887d  
+Commits on Dec 11, 2012
+
+fix HTML plot
+atmelino committed on Dec 11, 2012
+929fa8f  
+
+fix HTML plot
+atmelino committed on Dec 11, 2012
+3e9dd4b  
+
+fix HTML plot
+atmelino committed on Dec 11, 2012
+8101c59  
+Commits on Dec 10, 2012
+
+fix plot
+atmelino committed on Dec 10, 2012
+191bc3c  
+
+wiki images
+atmelino committed on Dec 10, 2012
+4502fc4  
+
+add flot
+atmelino committed on Dec 10, 2012
+1edfcfe  
+
+reorganize
+atmelino committed on Dec 10, 2012
+f479c87  
+
+reorganize
+atmelino committed on Dec 10, 2012
+3c46b3a  
+
+reorganize
+atmelino committed on Dec 10, 2012
+55c8caa  
+
+rereorganize
+atmelino committed on Dec 10, 2012
+e4a8d61  
+
+rereorganize
+atmelino committed on Dec 10, 2012
+32a7191  
+NewerOlder
+
+
+
+Branch: master 
+Commits on Dec 10, 2012
+
+reorganize
+atmelino committed on Dec 10, 2012
+4853271  
+
+reorganize
+atmelino committed on Dec 10, 2012
+caa532a  
+Commits on Dec 9, 2012
+
+bla
+user committed on Dec 9, 2012
+7405ca9  
+Commits on Dec 6, 2012
+
+bla
+user committed on Dec 6, 2012
+f24bc17  
+
+bla
+user committed on Dec 6, 2012
+cff3016  
+
+bla
+user committed on Dec 6, 2012
+f2483a5  
+NewerOlder
+
+
+
+
+
+
+
