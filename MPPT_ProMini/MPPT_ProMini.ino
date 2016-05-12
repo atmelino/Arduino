@@ -11,10 +11,12 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define BLINK 1
 #define SERIAL 1
 #define LCD 1
+#define POWERSAVE 0
 #define POTENTIOMETER 0
 #define MAXPWM 210
 #define MAXVOLTAGE 8.4
 #define TAPEROFFVOLTAGE 8.35
+#define SHUTDOWNVOLTAGE 7.9
 
 
 // Wiring:
@@ -25,6 +27,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define PIN_SCLK  12
 #define PWM_OUT 3            // PWM signal pin 
 #define PWM_ENABLE_PIN 4    // pin used to control shutoff function of the IR2104 MOSFET driver
+#define RELAY_PIN (5)
 
 
 // These #defines make it easy to set the backlight color
@@ -56,8 +59,8 @@ int count = 0;
 void setup()
 {
 
-  //Serial.begin(9600);
-  Serial.begin(112500);
+  Serial.begin(9600);
+  //Serial.begin(112500);
   Serial.println("no  Volt     mA   mW     Volt     mA   mW   eff    PWM   target");
 
   // voltage and current sensor
@@ -65,6 +68,8 @@ void setup()
 
   // LED
   pinMode(13, OUTPUT);
+
+  pinMode(RELAY_PIN, OUTPUT);
 
   // enable MOSFET driver chip
   pinMode(PWM_ENABLE_PIN, OUTPUT);     // sets the digital pin as output
@@ -96,26 +101,31 @@ void loop()
     cmA[i] = ina3221.getCurrent_mA(i + 1);
     lv[i] = bv[i] + (sv[i] / 1000);
     pw[i] = bv[i] * cmA[i];
-
   }
 
 
+
+  // Is battery voltage high enough to power system?
+  if (bv[CHANNEL_BATTERY] > SHUTDOWNVOLTAGE)
+    digitalWrite(RELAY_PIN, HIGH);
+  else
+    digitalWrite(RELAY_PIN, LOW);
+
   // Is sun shining?
   if (bv[CHANNEL_SOLAR] < 9.5) {
-    // No: go to sleep at night
+    // No: go to sleep at night    
     digitalWrite(13, LOW);    // turn the LED off
     lcd.setCursor(0, 3);
     lcd.print("SLEEP ON ");
-    int sleepMS = Watchdog.sleep();
+    if (POWERSAVE)
+      int sleepMS = Watchdog.sleep();
     // brief LED on when wakeup
     digitalWrite(13, HIGH);   // turn the LED on
     delay(10);
     digitalWrite(13, LOW);    // turn the LED off
-
   }
   else {
     // Yes: charge battery
-
     //Serial.println("alive");
     // blink as sign of life
     if (BLINK)
@@ -128,17 +138,24 @@ void loop()
     }
 
     // Set PWM duty cycle
-    if (POTENTIOMETER)
+    uint8_t buttons = lcd.readButtons();
+    //    if (POTENTIOMETER)
+    if (buttons & BUTTON_SELECT)
     {
+      lcd.setCursor(0, 3);
+      lcd.print("POT MODE ");
       // read potentiometer value
       sensorValue = analogRead(potentiometerPin);
       newpulseWidth = sensorValue / 4;
       if ( newpulseWidth > 244)
         newpulseWidth = 244;
       pulseWidth = newpulseWidth;
+      pwmWrite(PWM_OUT, pulseWidth);
     }
     else
     {
+      lcd.setCursor(0, 3);
+      lcd.print("MPPT MODE");
 
       // calculate target PWM
       if (bv[CHANNEL_BATTERY] <= TAPEROFFVOLTAGE)
@@ -177,15 +194,16 @@ void loop()
     }
   }
 
-  lcd.setCursor(0, 3);        
-  lcd.print("SLEEP OFF");  
+  //lcd.setCursor(0, 3);
+  //lcd.print("SLEEP OFF");
   printValues(bv, cmA, pw) ;
 
 
   count++;
   //delay(700);
   //delay(200);
-  delay(500);
+  //delay(500);
+  delay(1000);
 }
 
 
