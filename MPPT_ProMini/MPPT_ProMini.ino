@@ -8,7 +8,7 @@
 Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 
 // Options
-#define BLINK 1
+#define BLINK 0
 #define SERIAL 1
 #define LCD 1
 #define POWERSAVE 0
@@ -16,18 +16,14 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define MAXPWM 210
 #define MAXVOLTAGE 8.4
 #define TAPEROFFVOLTAGE 8.35
-#define SHUTDOWNVOLTAGE 7.9
+#define SHUTDOWNVOLTAGE 7.6
 
 
 // Wiring:
-#define PIN_RESET 8
-#define PIN_SCE   9
-#define PIN_DC    10
-#define PIN_SDIN  11
-#define PIN_SCLK  12
 #define PWM_OUT 3            // PWM signal pin 
 #define PWM_ENABLE_PIN 4    // pin used to control shutoff function of the IR2104 MOSFET driver
 #define RELAY_PIN (5)
+#define CHARGE_LED (6)
 
 
 // These #defines make it easy to set the backlight color
@@ -49,8 +45,8 @@ boolean LED_ON_OFF = true;
 SDL_Arduino_INA3221 ina3221;
 
 // the three channels of the INA3221
-#define CHANNEL_SOLAR 2 // solar panel
-#define CHANNEL_BATTERY 1 // lipo battery
+#define CHANNEL_SOLAR 2 // solar panel on INA channel 3, array position 2
+#define CHANNEL_BATTERY 1 // lipo battery on INA channel 2, array position 1
 
 
 
@@ -68,6 +64,8 @@ void setup()
 
   // LED
   pinMode(13, OUTPUT);
+  pinMode(CHARGE_LED, OUTPUT);
+  digitalWrite(CHARGE_LED, HIGH);
 
   pinMode(RELAY_PIN, OUTPUT);
 
@@ -85,7 +83,8 @@ void setup()
   lcd.begin(20, 4);
   lcd.setCursor(0, 0);            // set the LCD cursor   position
   lcd.print("MPPT");  // print a simple message on the LCD
-  lcd.setBacklight(WHITE);
+  //lcd.setBacklight(WHITE);
+  lcd.setBacklight(0);
 
 }
 
@@ -93,7 +92,7 @@ void setup()
 void loop()
 {
   float sv[3], bv[3], cmA[3], lv[3], pw[3];
-
+  int ontime, offtime;
 
   for (int i = 0; i < 3; i++) {
     bv[i] = ina3221.getBusVoltage_V(i + 1);
@@ -112,13 +111,13 @@ void loop()
     digitalWrite(RELAY_PIN, LOW);
 
   // Is sun shining?
-  if (bv[CHANNEL_SOLAR] < 9.5) {
-    // No: go to sleep at night    
+  if (POWERSAVE && bv[CHANNEL_SOLAR] < 9.5) {
+    // No: go to sleep at night
     digitalWrite(13, LOW);    // turn the LED off
     lcd.setCursor(0, 3);
     lcd.print("SLEEP ON ");
-    if (POWERSAVE)
-      int sleepMS = Watchdog.sleep();
+    //if (POWERSAVE)
+    int sleepMS = Watchdog.sleep();
     // brief LED on when wakeup
     digitalWrite(13, HIGH);   // turn the LED on
     delay(10);
@@ -136,6 +135,7 @@ void loop()
         digitalWrite(13, LOW);    // turn the LED off
       LED_ON_OFF = !LED_ON_OFF;
     }
+
 
     // Set PWM duty cycle
     uint8_t buttons = lcd.readButtons();
@@ -157,6 +157,28 @@ void loop()
       lcd.setCursor(0, 3);
       lcd.print("MPPT MODE");
 
+      if (buttons & BUTTON_RIGHT) {
+        digitalWrite(PWM_ENABLE_PIN, LOW);
+        PWMOnOff = false;
+      }
+      else
+      {
+        digitalWrite(PWM_ENABLE_PIN, HIGH);
+        PWMOnOff = true;
+      }
+
+
+      /*
+
+            if (bv[CHANNEL_SOLAR] < 9.5) {
+              digitalWrite(PWM_ENABLE_PIN, LOW);
+              PWMOnOff = false;
+            }
+            else
+            {
+              digitalWrite(PWM_ENABLE_PIN, HIGH);
+              PWMOnOff = true;
+      */
       // calculate target PWM
       if (bv[CHANNEL_BATTERY] <= TAPEROFFVOLTAGE)
         targetPulseWidth = MAXPWM;
@@ -191,6 +213,7 @@ void loop()
           pwmWrite(PWM_OUT, pulseWidth);
         }
       }
+      //    }
     }
   }
 
@@ -200,10 +223,29 @@ void loop()
 
 
   count++;
+  if (bv[CHANNEL_BATTERY] < 7.5)
+    ontime = 10;
+  else
+    ontime = 2000 * (bv[CHANNEL_BATTERY] - 7.5);
+  offtime = 2000 - ontime;
+  //Serial.print(ontime);
+  //Serial.print(" ");
+  //Serial.println(offtime);
+  digitalWrite(CHARGE_LED, HIGH);
+  delay(ontime);
+  digitalWrite(CHARGE_LED, LOW);
+  delay(offtime);
+
+
+
+  //digitalWrite(CHARGE_LED, !digitalRead(CHARGE_LED));
+
+
   //delay(700);
   //delay(200);
   //delay(500);
-  delay(1000);
+  //delay(1000);
+  //delay(2000);
 }
 
 
