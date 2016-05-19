@@ -10,4 +10,4 @@ Arduino code for Maximum Power Point Tracker project
 
 
 
-<img src="https://github.com/atmelino/Arduino/tree/master/MPPT/Eagle/MPPT_ArdProMini/board.png" alt="alt" style="width:304px;height:228px;">
+<img src="https://raw.githubusercontent.com/atmelino/Arduino/master/MPPT/Eagle/MPPT_ArdProMini/board.png" alt="alt" style="width:304px;height:228px;">
