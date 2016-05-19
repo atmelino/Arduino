@@ -2,7 +2,7 @@
 
 Contents:
 
-<h2>MPPT_UNO</h2>
+<h2>MPPT Arduino</h2>
 
 Arduino code for Maximum Power Point Tracker project
 
