@@ -55,6 +55,11 @@ int count = 0;
 void setup()
 {
 
+  // set all digital pins to output, even if unused, not float= save power
+  for (int i = 0; i < 20; i++)
+    pinMode(i, OUTPUT);
+
+
   Serial.begin(9600);
   //Serial.begin(112500);
   Serial.println("no  Volt     mA   mW     Volt     mA   mW   eff    PWM   target");
@@ -64,13 +69,13 @@ void setup()
 
   // LED
   pinMode(13, OUTPUT);
-  pinMode(CHARGE_LED, OUTPUT);
+  //pinMode(CHARGE_LED, OUTPUT);
   digitalWrite(CHARGE_LED, HIGH);
 
-  pinMode(RELAY_PIN, OUTPUT);
+  //pinMode(RELAY_PIN, OUTPUT);
 
   // enable MOSFET driver chip
-  pinMode(PWM_ENABLE_PIN, OUTPUT);     // sets the digital pin as output
+  //pinMode(PWM_ENABLE_PIN, OUTPUT);     // sets the digital pin as output
   digitalWrite(PWM_ENABLE_PIN, HIGH);
 
   // PWM
