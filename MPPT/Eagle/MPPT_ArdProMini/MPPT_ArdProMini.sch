@@ -377,25 +377,25 @@ Footprint with angle programming connector</description>
 <pad name="J6.2_LONG" x="-10.16" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J6.3_LONG" x="-7.62" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J6.4_LONG" x="-5.08" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
-<pad name="P$5" x="-2.54" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
-<pad name="P$6" x="0" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
-<pad name="P$7" x="2.54" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
+<pad name="J6.5_LONG" x="-2.54" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
+<pad name="J6.6_LONG" x="0" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
+<pad name="J6.7_LONG" x="2.54" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J6.8_LONG" x="5.08" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
-<pad name="P$9" x="7.62" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
-<pad name="P$10" x="10.16" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
+<pad name="J6.9_LONG" x="7.62" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
+<pad name="J6.10_LONG" x="10.16" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J6.11_LONG" x="12.7" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J6.12_LONG" x="15.24" y="10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J7.12_LONG" x="-12.7" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J7.11_LONG" x="-10.16" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
-<pad name="P$15" x="-7.62" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
+<pad name="J7.10_LONG" x="-7.62" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J7.9_LONG" x="-5.08" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J7.8_LONG" x="-2.54" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J7.7_LONG" x="0" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J7.6_LONG" x="2.54" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J7.5_LONG" x="5.08" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J7.4_LONG" x="7.62" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
-<pad name="P$22" x="10.16" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
-<pad name="P$23" x="12.7" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
+<pad name="J7.3_LONG" x="10.16" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
+<pad name="J7.2_LONG" x="12.7" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <pad name="J7.1_LONG" x="15.24" y="-10.16" drill="0.8" diameter="1.9304" shape="long" rot="R90"/>
 <text x="-12.065" y="-5.715" size="1.27" layer="21" rot="R90">TX</text>
 <text x="-9.525" y="-5.715" size="1.27" layer="21" rot="R90">RX</text>
@@ -403,6 +403,11 @@ Footprint with angle programming connector</description>
 <text x="-6.985" y="1.905" size="1.27" layer="21" rot="R90">RST</text>
 <text x="5.715" y="-5.715" size="1.27" layer="21" rot="R90">D5</text>
 <text x="8.255" y="-5.715" size="1.27" layer="21" rot="R90">D6</text>
+<text x="10.795" y="-5.715" size="1.27" layer="21" rot="R90">D7</text>
+<text x="13.335" y="-5.715" size="1.27" layer="21" rot="R90">D8</text>
+<text x="-0.635" y="1.27" size="1.27" layer="21" rot="R90">A4</text>
+<text x="10.795" y="2.54" size="1.27" layer="21" rot="R90">D12</text>
+<text x="13.335" y="2.54" size="1.27" layer="21" rot="R90">D11</text>
 </package>
 <package name="ARDUINO-PRO-MINI#APC">
 <description>&lt;b&gt;Arduino Pro Mini&lt;/b&gt;&lt;br&gt;
@@ -748,29 +753,29 @@ Footprint with angle programming connector</description>
 <device name="" package="ARDUINO-PRO-MINI_EXTRAPADS">
 <connects>
 <connect gate="G$1" pin="A0" pad="J6.8 J6.8_LONG"/>
-<connect gate="G$1" pin="A1" pad="J6.7"/>
-<connect gate="G$1" pin="A2" pad="J6.6"/>
-<connect gate="G$1" pin="A3" pad="J6.5"/>
+<connect gate="G$1" pin="A1" pad="J6.7 J6.7_LONG"/>
+<connect gate="G$1" pin="A2" pad="J6.6 J6.6_LONG"/>
+<connect gate="G$1" pin="A3" pad="J6.5 J6.5_LONG"/>
 <connect gate="G$1" pin="A4" pad="J2.1"/>
 <connect gate="G$1" pin="A5" pad="J2.2"/>
 <connect gate="G$1" pin="D0/RX" pad="J7.11 J7.11_LONG"/>
 <connect gate="G$1" pin="D1/TX" pad="J7.12 J7.12_LONG"/>
 <connect gate="G$1" pin="D10" pad="J6.12 J6.12_LONG"/>
 <connect gate="G$1" pin="D11" pad="J6.11 J6.11_LONG"/>
-<connect gate="G$1" pin="D12" pad="J6.10"/>
-<connect gate="G$1" pin="D13" pad="J6.9"/>
+<connect gate="G$1" pin="D12" pad="J6.10 J6.10_LONG"/>
+<connect gate="G$1" pin="D13" pad="J6.9 J6.9_LONG"/>
 <connect gate="G$1" pin="D2" pad="J7.8 J7.8_LONG"/>
 <connect gate="G$1" pin="D3" pad="J7.7 J7.7_LONG"/>
 <connect gate="G$1" pin="D4" pad="J7.6 J7.6_LONG"/>
 <connect gate="G$1" pin="D5" pad="J7.5 J7.5_LONG"/>
 <connect gate="G$1" pin="D6" pad="J7.4 J7.4_LONG"/>
-<connect gate="G$1" pin="D7" pad="J7.3"/>
-<connect gate="G$1" pin="D8" pad="J7.2"/>
+<connect gate="G$1" pin="D7" pad="J7.3 J7.3_LONG"/>
+<connect gate="G$1" pin="D8" pad="J7.2 J7.2_LONG"/>
 <connect gate="G$1" pin="D9" pad="J7.1 J7.1_LONG"/>
 <connect gate="G$1" pin="GND.1" pad="J7.9 J7.9_LONG"/>
 <connect gate="G$1" pin="GND.2" pad="J6.2 J6.2_LONG"/>
 <connect gate="G$1" pin="RAW" pad="J6.1 J6.1_LONG"/>
-<connect gate="G$1" pin="RST.1" pad="J7.10"/>
+<connect gate="G$1" pin="RST.1" pad="J7.10 J7.10_LONG"/>
 <connect gate="G$1" pin="RST.2" pad="J6.3 J6.3_LONG"/>
 <connect gate="G$1" pin="VCC" pad="J6.4 J6.4_LONG"/>
 </connects>
@@ -7878,10 +7883,10 @@ distributor Schukat</description>
 <sheets>
 <sheet>
 <plain>
-<text x="154.94" y="111.76" size="1.778" layer="91">rev 0.5</text>
+<text x="154.94" y="111.76" size="1.778" layer="91">rev 0.6</text>
 </plain>
 <instances>
-<instance part="GND1" gate="1" x="129.54" y="78.74"/>
+<instance part="GND1" gate="1" x="129.54" y="76.2"/>
 <instance part="C1" gate="G$1" x="17.78" y="45.72"/>
 <instance part="GND2" gate="1" x="17.78" y="38.1" rot="MR0"/>
 <instance part="Q1" gate="G$1" x="48.26" y="45.72" rot="MR90"/>
@@ -7957,13 +7962,6 @@ distributor Schukat</description>
 <pinref part="C6" gate="G$1" pin="1"/>
 </segment>
 <segment>
-<wire x1="119.38" y1="81.28" x2="119.38" y2="78.74" width="0.1524" layer="91"/>
-<pinref part="GND1" gate="1" pin="GND"/>
-<wire x1="129.54" y1="81.28" x2="119.38" y2="81.28" width="0.1524" layer="91"/>
-<pinref part="JP1" gate="G$1" pin="5"/>
-<pinref part="JP1" gate="G$1" pin="6"/>
-</segment>
-<segment>
 <pinref part="GND6" gate="1" pin="GND"/>
 <wire x1="127" y1="93.98" x2="119.38" y2="93.98" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="11"/>
@@ -7976,6 +7974,11 @@ distributor Schukat</description>
 <segment>
 <pinref part="TM1" gate="G$1" pin="A"/>
 <pinref part="GND7" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="JP1" gate="G$1" pin="5"/>
+<pinref part="GND1" gate="1" pin="GND"/>
+<wire x1="119.38" y1="78.74" x2="129.54" y2="78.74" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$4" class="0">
@@ -8163,10 +8166,10 @@ distributor Schukat</description>
 <net name="N$5" class="0">
 <segment>
 <pinref part="M2" gate="G$1" pin="D5"/>
-<wire x1="-5.08" y1="83.82" x2="-10.16" y2="83.82" width="0.1524" layer="91"/>
-<wire x1="-10.16" y1="83.82" x2="-10.16" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="-10.16" y1="63.5" x2="101.6" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="101.6" y1="63.5" x2="101.6" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="-5.08" y1="83.82" x2="-12.7" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="-12.7" y1="83.82" x2="-12.7" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="-12.7" y1="60.96" x2="101.6" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="60.96" x2="101.6" y2="88.9" width="0.1524" layer="91"/>
 <wire x1="101.6" y1="88.9" x2="119.38" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="9"/>
 </segment>
@@ -8174,10 +8177,10 @@ distributor Schukat</description>
 <net name="N$8" class="0">
 <segment>
 <pinref part="M2" gate="G$1" pin="D6"/>
-<wire x1="-5.08" y1="81.28" x2="-7.62" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="-7.62" y1="81.28" x2="-7.62" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="-7.62" y1="66.04" x2="99.06" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="66.04" x2="99.06" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="-5.08" y1="81.28" x2="-10.16" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="-10.16" y1="81.28" x2="-10.16" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="-10.16" y1="63.5" x2="99.06" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="63.5" x2="99.06" y2="86.36" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="8"/>
 <wire x1="99.06" y1="86.36" x2="119.38" y2="86.36" width="0.1524" layer="91"/>
 </segment>
@@ -8210,6 +8213,17 @@ distributor Schukat</description>
 <wire x1="134.62" y1="96.52" x2="119.38" y2="96.52" width="0.1524" layer="91"/>
 <pinref part="JP4" gate="G$1" pin="1"/>
 <wire x1="119.38" y1="96.52" x2="106.68" y2="96.52" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$9" class="0">
+<segment>
+<pinref part="M2" gate="G$1" pin="D7"/>
+<wire x1="-5.08" y1="78.74" x2="-7.62" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="-7.62" y1="78.74" x2="-7.62" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-7.62" y1="66.04" x2="96.52" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="96.52" y1="66.04" x2="96.52" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="JP1" gate="G$1" pin="6"/>
+<wire x1="96.52" y1="81.28" x2="119.38" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
