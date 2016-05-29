@@ -99,6 +99,9 @@ void loop()
   float sv[3], bv[3], cmA[3], lv[3], pw[3];
   int ontime, offtime;
 
+  //Serial.println("start loop");
+
+
   for (int i = 0; i < 3; i++) {
     bv[i] = ina3221.getBusVoltage_V(i + 1);
     sv[i] = ina3221.getShuntVoltage_mV(i + 1);
@@ -110,11 +113,15 @@ void loop()
 
 
   // Is battery voltage high enough to power system?
-  if (bv[CHANNEL_BATTERY] > SHUTDOWNVOLTAGE)
+  if (bv[CHANNEL_BATTERY] > SHUTDOWNVOLTAGE) {
+    lcd.setCursor(10, 3);
+    lcd.print("batt ok ");
     digitalWrite(RELAY_PIN, HIGH);
-  else
+  } else {
+    lcd.setCursor(10, 3);
+    lcd.print("batt low");
     digitalWrite(RELAY_PIN, LOW);
-
+  }
   // Is sun shining?
   if (POWERSAVE && bv[CHANNEL_SOLAR] < 9.5) {
     // No: go to sleep at night
@@ -191,6 +198,8 @@ void loop()
         targetPulseWidth = 0;
       if (bv[CHANNEL_BATTERY]  > TAPEROFFVOLTAGE && bv[CHANNEL_BATTERY]  < MAXVOLTAGE)
         targetPulseWidth = MAXPWM * (MAXVOLTAGE - bv[CHANNEL_BATTERY]) / (MAXVOLTAGE - TAPEROFFVOLTAGE);
+      //Serial.print("computed targetPulseWidth: ");
+      //Serial.println(targetPulseWidth);
 
 
       // Determine if PWM change is required
@@ -225,13 +234,16 @@ void loop()
   //lcd.setCursor(0, 3);
   //lcd.print("SLEEP OFF");
   printValues(bv, cmA, pw) ;
+  //Serial.println("after printValues()");
 
 
   count++;
-  if (bv[CHANNEL_BATTERY] < 7.5)
+  if (bv[CHANNEL_BATTERY] <= 7.5)
     ontime = 10;
-  else
+  if (bv[CHANNEL_BATTERY] > 7.5 && bv[CHANNEL_BATTERY] <= 8.35)
     ontime = 2000 * (bv[CHANNEL_BATTERY] - 7.5);
+  if (bv[CHANNEL_BATTERY] > 8.35)
+    ontime = 1950;
   offtime = 2000 - ontime;
   //Serial.print(ontime);
   //Serial.print(" ");
@@ -251,6 +263,8 @@ void loop()
   //delay(500);
   //delay(1000);
   //delay(2000);
+  //Serial.println("end loop");
+  //delay(1000);
 }
 
 
