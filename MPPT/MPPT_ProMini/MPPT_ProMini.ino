@@ -11,8 +11,9 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define BLINK 0
 #define SERIAL 1
 #define LCD 1
-#define POWERSAVE 0
-#define POTENTIOMETER 0
+#define SLEEPMODE 0
+#define BUTTON_POTENTIOMETER BUTTON_SELECT  // DIP switch 1
+#define BUTTON_PWM_ENABLE BUTTON_RIGHT  // DIP switch 2
 #define MAXPWM 210
 #define MAXVOLTAGE 8.4
 #define TAPEROFFVOLTAGE 8.35
@@ -58,6 +59,8 @@ void setup()
   // set all digital pins to output, even if unused, not float= save power
   for (int i = 0; i < 20; i++)
     pinMode(i, OUTPUT);
+  // except for potentiometer reading
+  pinMode(potentiometerPin, INPUT);
 
 
   Serial.begin(9600);
@@ -99,8 +102,6 @@ void loop()
   float sv[3], bv[3], cmA[3], lv[3], pw[3];
   int ontime, offtime;
 
-  //Serial.println("start loop");
-
 
   for (int i = 0; i < 3; i++) {
     bv[i] = ina3221.getBusVoltage_V(i + 1);
@@ -122,18 +123,24 @@ void loop()
     lcd.print("batt low");
     digitalWrite(RELAY_PIN, LOW);
   }
+
   // Is sun shining?
-  if (POWERSAVE && bv[CHANNEL_SOLAR] < 9.5) {
+  if (SLEEPMODE && bv[CHANNEL_SOLAR] < 9.5) {
     // No: go to sleep at night
-    digitalWrite(13, LOW);    // turn the LED off
     lcd.setCursor(0, 3);
     lcd.print("SLEEP ON ");
-    //if (POWERSAVE)
+
     int sleepMS = Watchdog.sleep();
-    // brief LED on when wakeup
-    digitalWrite(13, HIGH);   // turn the LED on
-    delay(10);
-    digitalWrite(13, LOW);    // turn the LED off
+
+    // first command after wakeup
+    lcd.setCursor(0, 3);
+    lcd.print("SLEEP OFF");
+
+    // brief LED blink on when wakeup
+    digitalWrite(CHARGE_LED, HIGH);
+    delay(500);
+    digitalWrite(CHARGE_LED, LOW);
+
   }
   else {
     // Yes: charge battery
@@ -151,14 +158,16 @@ void loop()
 
     // Set PWM duty cycle
     uint8_t buttons = lcd.readButtons();
-    //    if (POTENTIOMETER)
-    if (buttons & BUTTON_SELECT)
+
+    if (buttons & BUTTON_POTENTIOMETER)
     {
       lcd.setCursor(0, 3);
       lcd.print("POT MODE ");
       // read potentiometer value
       sensorValue = analogRead(potentiometerPin);
+      Serial.println(sensorValue);
       newpulseWidth = sensorValue / 4;
+      Serial.println(newpulseWidth);
       if ( newpulseWidth > 244)
         newpulseWidth = 244;
       pulseWidth = newpulseWidth;
@@ -169,7 +178,7 @@ void loop()
       lcd.setCursor(0, 3);
       lcd.print("MPPT MODE");
 
-      if (buttons & BUTTON_RIGHT) {
+      if (buttons & BUTTON_PWM_ENABLE) {
         digitalWrite(PWM_ENABLE_PIN, LOW);
         PWMOnOff = false;
       }
@@ -231,8 +240,6 @@ void loop()
     }
   }
 
-  //lcd.setCursor(0, 3);
-  //lcd.print("SLEEP OFF");
   printValues(bv, cmA, pw) ;
   //Serial.println("after printValues()");
 
@@ -252,19 +259,6 @@ void loop()
   delay(ontime);
   digitalWrite(CHARGE_LED, LOW);
   delay(offtime);
-
-
-
-  //digitalWrite(CHARGE_LED, !digitalRead(CHARGE_LED));
-
-
-  //delay(700);
-  //delay(200);
-  //delay(500);
-  //delay(1000);
-  //delay(2000);
-  //Serial.println("end loop");
-  //delay(1000);
 }
 
 
