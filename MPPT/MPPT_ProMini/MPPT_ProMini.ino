@@ -14,17 +14,22 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define SLEEPMODE 0
 #define BUTTON_POTENTIOMETER BUTTON_SELECT  // DIP switch 1
 #define BUTTON_PWM_ENABLE BUTTON_RIGHT  // DIP switch 2
+#define BUTTON_SW_VERSION BUTTON_DOWN  // DIP switch 3
+#define BUTTON_UNUSED BUTTON_UP  // DIP switch 4
 #define MAXPWM 210
 #define MAXVOLTAGE 8.4
 #define TAPEROFFVOLTAGE 8.35
 #define SHUTDOWNVOLTAGE 7.6
+#define PI_ON_VOLTAGE 8.1
+#define PI_OFF_VOLTAGE 7.8
 
 
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
 #define PWM_ENABLE_PIN 4    // pin used to control shutoff function of the IR2104 MOSFET driver
 #define RELAY_PIN (5)
-#define CHARGE_LED (6)
+#define RELAY_PI_PIN (6)
+#define CHARGE_LED (7)
 
 
 // These #defines make it easy to set the backlight color
@@ -124,6 +129,18 @@ void loop()
     digitalWrite(RELAY_PIN, LOW);
   }
 
+  // Is battery voltage high enough to power Pi?
+  if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE) {
+    digitalWrite(RELAY_PI_PIN, HIGH);
+  }
+  if (bv[CHANNEL_BATTERY] < PI_OFF_VOLTAGE) {
+    digitalWrite(RELAY_PI_PIN, LOW);
+  }
+
+
+  uint8_t buttons = lcd.readButtons();
+
+
   // Is sun shining?
   if (SLEEPMODE && bv[CHANNEL_SOLAR] < 9.5) {
     // No: go to sleep at night
@@ -155,12 +172,9 @@ void loop()
       LED_ON_OFF = !LED_ON_OFF;
     }
 
-
-    // Set PWM duty cycle
-    uint8_t buttons = lcd.readButtons();
-
     if (buttons & BUTTON_POTENTIOMETER)
     {
+      // Set PWM duty cycle
       lcd.setCursor(0, 3);
       lcd.print("POT MODE ");
       // read potentiometer value
@@ -242,6 +256,12 @@ void loop()
 
   printValues(bv, cmA, pw) ;
   //Serial.println("after printValues()");
+
+  if (buttons & BUTTON_SW_VERSION)
+  {
+    lcd.setCursor(0, 1);
+    lcd.print("SW 2016-06-05 23:47");
+  }
 
 
   count++;
