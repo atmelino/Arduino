@@ -20,8 +20,8 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define MAXVOLTAGE 8.4
 #define TAPEROFFVOLTAGE 8.35
 #define SHUTDOWNVOLTAGE 7.6
-#define PI_ON_VOLTAGE 8.1
-#define PI_OFF_VOLTAGE 7.8
+#define PI_ON_VOLTAGE 7.8
+#define PI_OFF_VOLTAGE 7.6
 
 
 // Wiring:
@@ -30,13 +30,13 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define RELAY_PIN (5)
 #define RELAY_PI_PIN (6)
 #define CHARGE_LED (7)
+#define ARDUINO_LED 13;      // pin for the built-in LED
 
 
 // These #defines make it easy to set the backlight color
 #define WHITE 0x7
 
 int potentiometerPin = A0;    // select the input pin for the potentiometer
-int ledPin = 13;      // select the pin for the LED
 int sensorValue = 0;  // variable to store the value coming from the sensor
 
 int32_t frequency = 80000; //frequency (in Hz)
@@ -75,15 +75,10 @@ void setup()
   // voltage and current sensor
   ina3221.begin();
 
-  // LED
-  pinMode(13, OUTPUT);
-  //pinMode(CHARGE_LED, OUTPUT);
+  // MPPT LED
   digitalWrite(CHARGE_LED, HIGH);
 
-  //pinMode(RELAY_PIN, OUTPUT);
-
   // enable MOSFET driver chip
-  //pinMode(PWM_ENABLE_PIN, OUTPUT);     // sets the digital pin as output
   digitalWrite(PWM_ENABLE_PIN, HIGH);
 
   // PWM
@@ -153,24 +148,11 @@ void loop()
     lcd.setCursor(0, 3);
     lcd.print("SLEEP OFF");
 
-    // brief LED blink on when wakeup
-    digitalWrite(CHARGE_LED, HIGH);
-    delay(500);
-    digitalWrite(CHARGE_LED, LOW);
 
   }
   else {
     // Yes: charge battery
     //Serial.println("alive");
-    // blink as sign of life
-    if (BLINK)
-    {
-      if (LED_ON_OFF == true)
-        digitalWrite(13, HIGH);   // turn the LED on
-      else
-        digitalWrite(13, LOW);    // turn the LED off
-      LED_ON_OFF = !LED_ON_OFF;
-    }
 
     if (buttons & BUTTON_POTENTIOMETER)
     {
@@ -260,11 +242,13 @@ void loop()
   if (buttons & BUTTON_SW_VERSION)
   {
     lcd.setCursor(0, 1);
-    lcd.print("SW 2016-06-05 23:47");
+    //lcd.print("SW 2016-06-05 23:47");
+    lcd.print("SW 2016-07-07 20:51");
   }
 
 
   count++;
+  // yellow LED and I2C arbitration
   if (bv[CHANNEL_BATTERY] <= 7.5)
     ontime = 10;
   if (bv[CHANNEL_BATTERY] > 7.5 && bv[CHANNEL_BATTERY] <= 8.35)
@@ -279,6 +263,12 @@ void loop()
   delay(ontime);
   digitalWrite(CHARGE_LED, LOW);
   delay(offtime);
+
+  // give the Pi enough time to query the INA3221 through I2C
+  digitalWrite(CHARGE_LED, HIGH);
+  delay(1000);
+
+
 }
 
 
