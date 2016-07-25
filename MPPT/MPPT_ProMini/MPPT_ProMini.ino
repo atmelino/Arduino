@@ -22,8 +22,10 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define SHUTDOWNVOLTAGE 7.6
 #define PI_ON_VOLTAGE 7.8
 #define PI_OFF_VOLTAGE 7.6
-
-
+//#define SWVERSION "SW 2016-06-05 23:47"
+//#define SWVERSION "SW 2016-07-07 20:51"
+#define SWVERSION "SW 2016-07-25 15:46"
+    
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
 #define PWM_ENABLE_PIN 4    // pin used to control shutoff function of the IR2104 MOSFET driver
@@ -197,14 +199,45 @@ void loop()
               PWMOnOff = true;
       */
       // calculate target PWM
+      if (bv[CHANNEL_BATTERY] < MAXVOLTAGE)
+        targetPulseWidth = MAXPWM;
+      if (bv[CHANNEL_BATTERY] >= MAXVOLTAGE)
+        targetPulseWidth = 0;
+
+      //Serial.print("computed targetPulseWidth: ");
+      //Serial.println(targetPulseWidth);
+
+
+      // Change PWM if required
+      if (pulseWidth < targetPulseWidth ) {
+          if (abs(pulseWidth - targetPulseWidth) > 10)
+            pulseWidth += 5;
+          else
+            pulseWidth++;
+          pwmWrite(PWM_OUT, pulseWidth);
+      }
+      if (pulseWidth > targetPulseWidth ) {
+          if (abs(pulseWidth - targetPulseWidth) > 10)
+            pulseWidth -= 5;
+          else
+            pulseWidth--;
+          pwmWrite(PWM_OUT, pulseWidth);
+      }
+
+
+
+
+
+      /*
+       // Method: tapering off and reverse direction control
+      // calculate target PWM
       if (bv[CHANNEL_BATTERY] <= TAPEROFFVOLTAGE)
         targetPulseWidth = MAXPWM;
       if (bv[CHANNEL_BATTERY] >= MAXVOLTAGE)
         targetPulseWidth = 0;
       if (bv[CHANNEL_BATTERY]  > TAPEROFFVOLTAGE && bv[CHANNEL_BATTERY]  < MAXVOLTAGE)
         targetPulseWidth = MAXPWM * (MAXVOLTAGE - bv[CHANNEL_BATTERY]) / (MAXVOLTAGE - TAPEROFFVOLTAGE);
-      //Serial.print("computed targetPulseWidth: ");
-      //Serial.println(targetPulseWidth);
+      
 
 
       // Determine if PWM change is required
@@ -232,7 +265,17 @@ void loop()
           pwmWrite(PWM_OUT, pulseWidth);
         }
       }
+      */
+      
+      
+      
+      
+      
       //    }
+
+    
+    
+    
     }
   }
 
@@ -242,8 +285,7 @@ void loop()
   if (buttons & BUTTON_SW_VERSION)
   {
     lcd.setCursor(0, 1);
-    //lcd.print("SW 2016-06-05 23:47");
-    lcd.print("SW 2016-07-07 20:51");
+    lcd.print(SWVERSION);
   }
 
 
