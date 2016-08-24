@@ -11,3 +11,88 @@ void loop() {
     Serial.println(number, DEC);
   }
 }
+
+
+
+      /*
+       // Method: tapering off and reverse direction control
+      // calculate target PWM
+      if (bv[CHANNEL_BATTERY] <= TAPEROFFVOLTAGE)
+        targetPulseWidth = MAXPWM;
+      if (bv[CHANNEL_BATTERY] >= MAXVOLTAGE)
+        targetPulseWidth = 0;
+      if (bv[CHANNEL_BATTERY]  > TAPEROFFVOLTAGE && bv[CHANNEL_BATTERY]  < MAXVOLTAGE)
+        targetPulseWidth = MAXPWM * (MAXVOLTAGE - bv[CHANNEL_BATTERY]) / (MAXVOLTAGE - TAPEROFFVOLTAGE);
+      
+
+
+      // Determine if PWM change is required
+
+      if ((targetPulseWidth - pulseWidth) > 40)
+        PWMGoUp = true;
+      if ((pulseWidth - targetPulseWidth) > 40)
+        PWMGoUp = false;
+
+      if (pulseWidth < targetPulseWidth ) {
+        if (PWMGoUp == true) {
+          if (abs(pulseWidth - targetPulseWidth) > 10)
+            pulseWidth += 5;
+          else
+            pulseWidth++;
+          pwmWrite(PWM_OUT, pulseWidth);
+        }
+      }
+      if (pulseWidth > targetPulseWidth ) {
+        if (PWMGoUp == false) {
+          if (abs(pulseWidth - targetPulseWidth) > 10)
+            pulseWidth -= 5;
+          else
+            pulseWidth--;
+          pwmWrite(PWM_OUT, pulseWidth);
+        }
+      }
+      */
+      
+      
+      
+  count++;
+  // yellow LED and I2C arbitration
+  if (bv[CHANNEL_BATTERY] <= 7.5)
+    ontime = 10;
+  if (bv[CHANNEL_BATTERY] > 7.5 && bv[CHANNEL_BATTERY] <= 8.35)
+    ontime = 2000 * (bv[CHANNEL_BATTERY] - 7.5);
+  if (bv[CHANNEL_BATTERY] > 8.35)
+    ontime = 1950;
+  offtime = 2000 - ontime;
+  //Serial.print(ontime);
+  //Serial.print(" ");
+  //Serial.println(offtime);
+  digitalWrite(CHARGE_LED, HIGH);
+  delay(ontime);
+  digitalWrite(CHARGE_LED, LOW);
+  delay(offtime);
+
+  // give the Pi enough time to query the INA3221 through I2C
+  digitalWrite(CHARGE_LED, HIGH);
+  delay(1000);
+
+
+
+
+
+
+        //int new_PWM = Serial.parseInt();
+
+        //if (Serial.read() == '\n') {
+        //Serial.println(new_PWM);
+
+
+        //}
+
+
+
+
+
+
+
+

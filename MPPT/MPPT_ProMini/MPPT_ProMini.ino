@@ -24,8 +24,9 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define PI_OFF_VOLTAGE 7.6
 //#define SWVERSION "SW 2016-06-05 23:47"
 //#define SWVERSION "SW 2016-07-07 20:51"
-#define SWVERSION "SW 2016-07-25 15:46"
-    
+//#define SWVERSION "SW 2016-07-25 15:46"
+#define SWVERSION "SW 2016-08-24 18:08"
+
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
 #define PWM_ENABLE_PIN 4    // pin used to control shutoff function of the IR2104 MOSFET driver
@@ -40,6 +41,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 
 int potentiometerPin = A0;    // select the input pin for the potentiometer
 int sensorValue = 0;  // variable to store the value coming from the sensor
+int incomingByte = 0;   // for incoming serial data
 
 int32_t frequency = 80000; //frequency (in Hz)
 byte pulseWidth = 0;
@@ -104,6 +106,7 @@ void loop()
   float sv[3], bv[3], cmA[3], lv[3], pw[3];
   int ontime, offtime;
 
+  count++;
 
   for (int i = 0; i < 3; i++) {
     bv[i] = ina3221.getBusVoltage_V(i + 1);
@@ -112,7 +115,6 @@ void loop()
     lv[i] = bv[i] + (sv[i] / 1000);
     pw[i] = bv[i] * cmA[i];
   }
-
 
 
   // Is battery voltage high enough to power system?
@@ -163,13 +165,29 @@ void loop()
       lcd.print("POT MODE ");
       // read potentiometer value
       sensorValue = analogRead(potentiometerPin);
-      Serial.println(sensorValue);
+      //Serial.println(sensorValue);
       newpulseWidth = sensorValue / 4;
-      Serial.println(newpulseWidth);
+      //Serial.println(newpulseWidth);
+
+
+      // send data only when you receive data:
+      while (Serial.available() > 0) {
+        // read the incoming byte:
+        incomingByte = Serial.read();
+
+        // say what you got:
+        Serial.print("I received: ");
+        Serial.println(incomingByte);
+
+      }
+
+      newpulseWidth = incomingByte;
       if ( newpulseWidth > 244)
         newpulseWidth = 244;
       pulseWidth = newpulseWidth;
       pwmWrite(PWM_OUT, pulseWidth);
+
+
     }
     else
     {
@@ -210,72 +228,27 @@ void loop()
 
       // Change PWM if required
       if (pulseWidth < targetPulseWidth ) {
-          if (abs(pulseWidth - targetPulseWidth) > 10)
-            pulseWidth += 5;
-          else
-            pulseWidth++;
-          pwmWrite(PWM_OUT, pulseWidth);
+        if (abs(pulseWidth - targetPulseWidth) > 10)
+          pulseWidth += 10;
+        else
+          pulseWidth++;
+        pwmWrite(PWM_OUT, pulseWidth);
       }
       if (pulseWidth > targetPulseWidth ) {
-          if (abs(pulseWidth - targetPulseWidth) > 10)
-            pulseWidth -= 5;
-          else
-            pulseWidth--;
-          pwmWrite(PWM_OUT, pulseWidth);
+        if (abs(pulseWidth - targetPulseWidth) > 10)
+          pulseWidth -= 5;
+        else
+          pulseWidth--;
+        pwmWrite(PWM_OUT, pulseWidth);
       }
 
 
 
-
-
-      /*
-       // Method: tapering off and reverse direction control
-      // calculate target PWM
-      if (bv[CHANNEL_BATTERY] <= TAPEROFFVOLTAGE)
-        targetPulseWidth = MAXPWM;
-      if (bv[CHANNEL_BATTERY] >= MAXVOLTAGE)
-        targetPulseWidth = 0;
-      if (bv[CHANNEL_BATTERY]  > TAPEROFFVOLTAGE && bv[CHANNEL_BATTERY]  < MAXVOLTAGE)
-        targetPulseWidth = MAXPWM * (MAXVOLTAGE - bv[CHANNEL_BATTERY]) / (MAXVOLTAGE - TAPEROFFVOLTAGE);
-      
-
-
-      // Determine if PWM change is required
-
-      if ((targetPulseWidth - pulseWidth) > 40)
-        PWMGoUp = true;
-      if ((pulseWidth - targetPulseWidth) > 40)
-        PWMGoUp = false;
-
-      if (pulseWidth < targetPulseWidth ) {
-        if (PWMGoUp == true) {
-          if (abs(pulseWidth - targetPulseWidth) > 10)
-            pulseWidth += 5;
-          else
-            pulseWidth++;
-          pwmWrite(PWM_OUT, pulseWidth);
-        }
-      }
-      if (pulseWidth > targetPulseWidth ) {
-        if (PWMGoUp == false) {
-          if (abs(pulseWidth - targetPulseWidth) > 10)
-            pulseWidth -= 5;
-          else
-            pulseWidth--;
-          pwmWrite(PWM_OUT, pulseWidth);
-        }
-      }
-      */
-      
-      
-      
-      
-      
       //    }
 
-    
-    
-    
+
+
+
     }
   }
 
@@ -289,8 +262,7 @@ void loop()
   }
 
 
-  count++;
-  // yellow LED and I2C arbitration
+  // yellow LED and loop period
   if (bv[CHANNEL_BATTERY] <= 7.5)
     ontime = 10;
   if (bv[CHANNEL_BATTERY] > 7.5 && bv[CHANNEL_BATTERY] <= 8.35)
@@ -305,11 +277,6 @@ void loop()
   delay(ontime);
   digitalWrite(CHARGE_LED, LOW);
   delay(offtime);
-
-  // give the Pi enough time to query the INA3221 through I2C
-  digitalWrite(CHARGE_LED, HIGH);
-  delay(1000);
-
 
 }
 
