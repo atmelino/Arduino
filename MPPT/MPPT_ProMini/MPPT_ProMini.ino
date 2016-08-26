@@ -12,8 +12,8 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define SERIAL 1
 #define LCD 1
 #define SLEEPMODE 0
-#define BUTTON_POTENTIOMETER BUTTON_SELECT  // DIP switch 1
-#define BUTTON_PWM_ENABLE BUTTON_RIGHT  // DIP switch 2
+#define BUTTON_PWM_MPPT BUTTON_SELECT       // DIP switch 1: 0=MPPT 1=depends on DIP switch 2
+#define BUTTON_PWM_POT_SERIAL BUTTON_RIGHT  // DIP switch 2: 1=POT 0=SERIAL
 #define BUTTON_SW_VERSION BUTTON_DOWN  // DIP switch 3
 #define BUTTON_UNUSED BUTTON_UP  // DIP switch 4
 #define MAXPWM 210
@@ -25,7 +25,8 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 //#define SWVERSION "SW 2016-06-05 23:47"
 //#define SWVERSION "SW 2016-07-07 20:51"
 //#define SWVERSION "SW 2016-07-25 15:46"
-#define SWVERSION "SW 2016-08-24 18:08"
+//#define SWVERSION "SW 2016-08-24 18:08"
+#define SWVERSION "SW 2016-08-25 23:22"
 
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
@@ -45,12 +46,11 @@ int incomingByte = 0;   // for incoming serial data
 
 int32_t frequency = 80000; //frequency (in Hz)
 byte pulseWidth = 0;
-byte newpulseWidth = 130;
+byte requestedPulseWidth = 130;
 byte targetPulseWidth;
-boolean PWMGoUp = true;
-boolean PWMOnOff = true;
 
 boolean LED_ON_OFF = true;
+boolean MODE_MPPT, MODE_POT, MODE_SER;
 
 SDL_Arduino_INA3221 ina3221;
 
@@ -116,8 +116,7 @@ void loop()
     pw[i] = bv[i] * cmA[i];
   }
 
-
-  // Is battery voltage high enough to power system?
+  // Is battery voltage high enough to power Arduino?
   if (bv[CHANNEL_BATTERY] > SHUTDOWNVOLTAGE) {
     lcd.setCursor(10, 3);
     lcd.print("batt ok ");
@@ -137,8 +136,25 @@ void loop()
   }
 
 
+  //Evaluate DIP switches
   uint8_t buttons = lcd.readButtons();
-
+  MODE_MPPT = false;
+  MODE_POT = false;
+  MODE_SER = false;
+  if (!(buttons & BUTTON_PWM_MPPT)) // means MPPT yes
+  {
+    //Serial.println("MPPT");
+    MODE_MPPT = true;
+  }
+  else {
+    if (buttons & BUTTON_PWM_POT_SERIAL)
+    {
+      MODE_POT = true;
+    }
+    else {
+      MODE_SER = true;
+    }
+  }
 
   // Is sun shining?
   if (SLEEPMODE && bv[CHANNEL_SOLAR] < 9.5) {
@@ -158,7 +174,16 @@ void loop()
     // Yes: charge battery
     //Serial.println("alive");
 
-    if (buttons & BUTTON_POTENTIOMETER)
+
+    if (MODE_MPPT)
+    {
+      lcd.setCursor(0, 3);
+      lcd.print("MPPT MODE");
+
+      requestedPulseWidth = MAXPWM;
+    }
+
+    if (MODE_POT)
     {
       // Set PWM duty cycle
       lcd.setCursor(0, 3);
@@ -166,10 +191,13 @@ void loop()
       // read potentiometer value
       sensorValue = analogRead(potentiometerPin);
       //Serial.println(sensorValue);
-      newpulseWidth = sensorValue / 4;
-      //Serial.println(newpulseWidth);
+      requestedPulseWidth = sensorValue / 4;
+    }
 
-
+    if (MODE_SER)
+    {
+      lcd.setCursor(0, 3);
+      lcd.print("SER MODE ");
       // send data only when you receive data:
       while (Serial.available() > 0) {
         // read the incoming byte:
@@ -180,77 +208,41 @@ void loop()
         Serial.println(incomingByte);
 
       }
-
-      newpulseWidth = incomingByte;
-      if ( newpulseWidth > 244)
-        newpulseWidth = 244;
-      pulseWidth = newpulseWidth;
-      pwmWrite(PWM_OUT, pulseWidth);
-
-
+      requestedPulseWidth = incomingByte;
     }
-    else
-    {
-      lcd.setCursor(0, 3);
-      lcd.print("MPPT MODE");
 
-      if (buttons & BUTTON_PWM_ENABLE) {
-        digitalWrite(PWM_ENABLE_PIN, LOW);
-        PWMOnOff = false;
-      }
-      else
-      {
-        digitalWrite(PWM_ENABLE_PIN, HIGH);
-        PWMOnOff = true;
-      }
+    //Serial.println(requestedPulseWidth);
+    if ( requestedPulseWidth > 244)
+      requestedPulseWidth = 244;
 
-
-      /*
-
-            if (bv[CHANNEL_SOLAR] < 9.5) {
-              digitalWrite(PWM_ENABLE_PIN, LOW);
-              PWMOnOff = false;
-            }
-            else
-            {
-              digitalWrite(PWM_ENABLE_PIN, HIGH);
-              PWMOnOff = true;
-      */
-      // calculate target PWM
-      if (bv[CHANNEL_BATTERY] < MAXVOLTAGE)
-        targetPulseWidth = MAXPWM;
-      if (bv[CHANNEL_BATTERY] >= MAXVOLTAGE)
-        targetPulseWidth = 0;
-
-      //Serial.print("computed targetPulseWidth: ");
-      //Serial.println(targetPulseWidth);
-
-
-      // Change PWM if required
-      if (pulseWidth < targetPulseWidth ) {
-        if (abs(pulseWidth - targetPulseWidth) > 10)
-          pulseWidth += 10;
-        else
-          pulseWidth++;
-        pwmWrite(PWM_OUT, pulseWidth);
-      }
-      if (pulseWidth > targetPulseWidth ) {
-        if (abs(pulseWidth - targetPulseWidth) > 10)
-          pulseWidth -= 5;
-        else
-          pulseWidth--;
-        pwmWrite(PWM_OUT, pulseWidth);
-      }
-
-
-
-      //    }
-
-
-
-
-    }
+    // calculate target PWM
+    if (bv[CHANNEL_BATTERY] < MAXVOLTAGE)
+      targetPulseWidth = requestedPulseWidth;
+    if (bv[CHANNEL_BATTERY] >= MAXVOLTAGE)
+      targetPulseWidth = 0;
+    //Serial.print("computed targetPulseWidth: ");
+    //Serial.println(targetPulseWidth);
   }
+
+
+  // Change PWM if required
+  if (pulseWidth < targetPulseWidth ) {
+    if (abs(pulseWidth - targetPulseWidth) > 10)
+      pulseWidth += 10;
+    else
+      pulseWidth++;
+    pwmWrite(PWM_OUT, pulseWidth);
+  }
+  if (pulseWidth > targetPulseWidth ) {
+    if (abs(pulseWidth - targetPulseWidth) > 10)
+      pulseWidth -= 5;
+    else
+      pulseWidth--;
+    pwmWrite(PWM_OUT, pulseWidth);
+  }
+
+
+
 
   printValues(bv, cmA, pw) ;
   //Serial.println("after printValues()");
@@ -320,10 +312,6 @@ void printValues(  float bv[], float cmA[], float pw[]) {
     memcpy(line[2], pwmstr, 5);
     line[2][5] = ' ';
     memcpy(&line[2][6], tapwmstr, 6);
-    if (PWMOnOff == true)
-      memcpy(&line[2][13], "ON ", 3);
-    else
-      memcpy(&line[2][13], "OFF", 3);
 
 
   }

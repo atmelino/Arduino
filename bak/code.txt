@@ -91,6 +91,44 @@ void loop() {
 
 
 
+#define BUTTON_PWM_ENABLE BUTTON_RIGHT  // DIP switch 2
+
+
+boolean PWMGoUp = true;
+boolean PWMOnOff = true;
+      if (buttons & BUTTON_PWM_ENABLE) {
+        digitalWrite(PWM_ENABLE_PIN, LOW);
+        PWMOnOff = false;
+      }
+      else
+      {
+        digitalWrite(PWM_ENABLE_PIN, HIGH);
+        PWMOnOff = true;
+      }
+
+    if (PWMOnOff == true)
+      memcpy(&line[2][13], "ON ", 3);
+    else
+      memcpy(&line[2][13], "OFF", 3);
+
+
+
+      /*
+
+            if (bv[CHANNEL_SOLAR] < 9.5) {
+              digitalWrite(PWM_ENABLE_PIN, LOW);
+              PWMOnOff = false;
+            }
+            else
+            {
+              digitalWrite(PWM_ENABLE_PIN, HIGH);
+              PWMOnOff = true;
+      */    //    }
+
+
+      pulseWidth = requestedPulseWidth;
+      pwmWrite(PWM_OUT, pulseWidth);
+
 
 
 
