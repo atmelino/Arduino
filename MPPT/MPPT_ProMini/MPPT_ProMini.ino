@@ -26,7 +26,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 //#define SWVERSION "SW 2016-07-07 20:51"
 //#define SWVERSION "SW 2016-07-25 15:46"
 //#define SWVERSION "SW 2016-08-24 18:08"
-#define SWVERSION "SW 2016-08-25 23:22"
+#define SWVERSION "SW 2016-08-29 23:01"
 
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
@@ -42,7 +42,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 
 int potentiometerPin = A0;    // select the input pin for the potentiometer
 int sensorValue = 0;  // variable to store the value coming from the sensor
-int incomingByte = 0;   // for incoming serial data
+int incomingByte = 200;   // for incoming serial data
 
 int32_t frequency = 80000; //frequency (in Hz)
 byte pulseWidth = 0;
