@@ -4,6 +4,7 @@
 #include <Adafruit_RGBLCDShield.h>
 #include <utility/Adafruit_MCP23017.h>
 #include <Adafruit_SleepyDog.h>
+#include <ArduinoJson.h>
 
 Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 
@@ -26,7 +27,8 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 //#define SWVERSION "SW 2016-07-07 20:51"
 //#define SWVERSION "SW 2016-07-25 15:46"
 //#define SWVERSION "SW 2016-08-24 18:08"
-#define SWVERSION "SW 2016-08-29 23:01"
+//#define SWVERSION "SW 2016-08-29 23:01"
+#define SWVERSION "SW 2016-09-05 01:42"
 
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
@@ -74,6 +76,7 @@ void setup()
 
   Serial.begin(9600);
   //Serial.begin(112500);
+  Serial.setTimeout(500);  // only need to be set once
   Serial.println("no  Volt     mA   mW     Volt     mA   mW   eff    PWM   target");
 
   // voltage and current sensor
@@ -105,6 +108,7 @@ void loop()
 {
   float sv[3], bv[3], cmA[3], lv[3], pw[3];
   int ontime, offtime;
+  StaticJsonBuffer<200> jsonBuffer;
 
   count++;
 
@@ -196,18 +200,38 @@ void loop()
 
     if (MODE_SER)
     {
+      char json[50];
+      String str;
       lcd.setCursor(0, 3);
       lcd.print("SER MODE ");
       // send data only when you receive data:
       while (Serial.available() > 0) {
         // read the incoming byte:
-        incomingByte = Serial.read();
-
+        //incomingByte = Serial.read();
         // say what you got:
-        Serial.print("I received: ");
-        Serial.println(incomingByte);
+        //Serial.print("I received: ");
+        //Serial.println(incomingByte);
 
+
+        str = Serial.readStringUntil('\n');
+        Serial.println(str);
       }
+      str.toCharArray(json, 50);
+      JsonObject& root = jsonBuffer.parseObject(json);
+
+
+      if (!root.success()) {
+        //Serial.println("parseObject() failed");
+      }
+      else
+      {
+        //{"PWM":213}
+        int pwmint = root["PWM"];
+        Serial.println(pwmint);
+        incomingByte = (byte)pwmint;
+      }
+
+
       requestedPulseWidth = incomingByte;
     }
 
