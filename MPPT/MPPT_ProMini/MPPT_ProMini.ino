@@ -22,7 +22,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define PI_ON_VOLTAGE 7.8
 #define PI_OFF_VOLTAGE 7.6
 #define SHUTDOWNVOLTAGE 7.5
-#define SWVERSION "SW 2016-09-23 16:51"
+#define SWVERSION "SW 2016-09-23 17:40"
 
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
@@ -140,26 +140,26 @@ void loop()
   pwhist[0] = pwhist[1];
   pwhist[1] = pwhist[2];
   pwhist[2] = pw[CHANNEL_SOLAR] + pw[CHANNEL_BATTERY];
-  Serial.print(pwhist[0]);
-  Serial.print(" ");
-  Serial.print(pwhist[1]);
-  Serial.print(" ");
-  Serial.print(pwhist[2]);
-  Serial.print(" ");
+  //Serial.print(pwhist[0]);
+  //Serial.print(" ");
+  //Serial.print(pwhist[1]);
+  //Serial.print(" ");
+  //Serial.print(pwhist[2]);
+  //Serial.print(" ");
 
   // if 3 consecutive measurements below 900mW
   if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE && pwhist[0] < 900.0 && pwhist[1] < 900.0 && pwhist[2] < 900.0 )
   {
     powerCyclePi();
-    lcd.setCursor(2, 17);
-    lcd.print("C+");
+    //lcd.setCursor(2, 17);
+    //lcd.print("C+");
     line[2][16] = 'C';
     line[2][17] = '+';
   }
   else
   {
-    lcd.setCursor(2, 17);
-    lcd.print("C-");
+    //lcd.setCursor(2, 17);
+    //lcd.print("C-");
     line[2][16] = 'C';
     line[2][17] = '-';
   }
