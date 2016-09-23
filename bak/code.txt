@@ -132,5 +132,37 @@ boolean PWMOnOff = true;
 
 
 
+//#define SWVERSION "SW 2016-06-05 23:47"
+//#define SWVERSION "SW 2016-07-07 20:51"
+//#define SWVERSION "SW 2016-07-25 15:46"
+//#define SWVERSION "SW 2016-08-24 18:08"
+//#define SWVERSION "SW 2016-08-29 23:01"
+//#define SWVERSION "SW 2016-09-05 01:42"
+
+//#define SWVERSION "SW 2016-09-23 01:22"
+
+
+
+
+
+
+
+
+
+  // check if pi is running
+  pwhist[0] = pwhist[1];
+  pwhist[1] = pwhist[2];
+  pwhist[2] = pw[CHANNEL_SOLAR] + pw[CHANNEL_BATTERY];
+  powerConsumption = (pwhist[0] + pwhist[1] + pwhist[2]) / 3.;
+  Serial.print(pwhist[0]);
+  Serial.print(" ");
+  Serial.print(pwhist[1]);
+  Serial.print(" ");
+  Serial.print(pwhist[2]);
+  Serial.print(" ");
+  Serial.print(" average power consumption ");
+  Serial.println(powerConsumption);
+  //if (powerConsumption < 900.0 && bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE)
+  //powerCyclePi();
 
 

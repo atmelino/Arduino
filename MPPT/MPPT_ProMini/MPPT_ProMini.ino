@@ -19,16 +19,10 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define BUTTON_UNUSED BUTTON_UP  // DIP switch 4
 #define MAXPWM 210
 #define MAXVOLTAGE 8.4
-#define TAPEROFFVOLTAGE 8.35
-#define SHUTDOWNVOLTAGE 7.6
 #define PI_ON_VOLTAGE 7.8
 #define PI_OFF_VOLTAGE 7.6
-//#define SWVERSION "SW 2016-06-05 23:47"
-//#define SWVERSION "SW 2016-07-07 20:51"
-//#define SWVERSION "SW 2016-07-25 15:46"
-//#define SWVERSION "SW 2016-08-24 18:08"
-//#define SWVERSION "SW 2016-08-29 23:01"
-#define SWVERSION "SW 2016-09-05 01:42"
+#define SHUTDOWNVOLTAGE 7.5
+#define SWVERSION "SW 2016-09-23 16:51"
 
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
@@ -50,6 +44,8 @@ int32_t frequency = 80000; //frequency (in Hz)
 byte pulseWidth = 0;
 byte requestedPulseWidth = 130;
 byte targetPulseWidth;
+float pwhist[3] = {1000., 1000., 1000.};
+static char line[4][21] = {"                    ", "                    ", "                    ", "                    "};
 
 boolean LED_ON_OFF = true;
 boolean MODE_MPPT, MODE_POT, MODE_SER;
@@ -107,6 +103,7 @@ void setup()
 void loop()
 {
   float sv[3], bv[3], cmA[3], lv[3], pw[3];
+  float powerConsumption;
   int ontime, offtime;
   StaticJsonBuffer<200> jsonBuffer;
 
@@ -139,6 +136,33 @@ void loop()
     digitalWrite(RELAY_PI_PIN, LOW);
   }
 
+  // check if pi is running
+  pwhist[0] = pwhist[1];
+  pwhist[1] = pwhist[2];
+  pwhist[2] = pw[CHANNEL_SOLAR] + pw[CHANNEL_BATTERY];
+  Serial.print(pwhist[0]);
+  Serial.print(" ");
+  Serial.print(pwhist[1]);
+  Serial.print(" ");
+  Serial.print(pwhist[2]);
+  Serial.print(" ");
+
+  // if 3 consecutive measurements below 900mW
+  if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE && pwhist[0] < 900.0 && pwhist[1] < 900.0 && pwhist[2] < 900.0 )
+  {
+    powerCyclePi();
+    lcd.setCursor(2, 17);
+    lcd.print("C+");
+    line[2][16] = 'C';
+    line[2][17] = '+';
+  }
+  else
+  {
+    lcd.setCursor(2, 17);
+    lcd.print("C-");
+    line[2][16] = 'C';
+    line[2][17] = '-';
+  }
 
   //Evaluate DIP switches
   uint8_t buttons = lcd.readButtons();
@@ -294,6 +318,13 @@ void loop()
   digitalWrite(CHARGE_LED, LOW);
   delay(offtime);
 
+} // end loop
+
+void powerCyclePi() {
+  delay(1000);
+  digitalWrite(RELAY_PI_PIN, LOW);
+  delay(1000);
+  digitalWrite(RELAY_PI_PIN, HIGH);
 }
 
 
@@ -302,7 +333,6 @@ void printValues(  float bv[], float cmA[], float pw[]) {
   static char bvstr[10];
   static char cmAstr[10];
   static char pwstr[10];
-  static char line[4][21] = {"                    ", "                    ", "                    ", "                    "};
   static char pwmstr[10];
   static char tapwmstr[10];
 
@@ -336,8 +366,6 @@ void printValues(  float bv[], float cmA[], float pw[]) {
     memcpy(line[2], pwmstr, 5);
     line[2][5] = ' ';
     memcpy(&line[2][6], tapwmstr, 6);
-
-
   }
 
 
@@ -373,7 +401,6 @@ void printINA(int count, char* line1, char* line2, float eff, float pulseWidth, 
   Serial.print(" ");
   Serial.print(targetPulseWidth);
   Serial.println();
-
 
 }
 
