@@ -10,7 +10,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 
 // Options
 #define BLINK 0
-#define MODE_SERIAL 1
+#define SERIAL_COMM 1
 #define LCD 1
 #define SLEEPMODE 0
 #define BUTTON_PWM_MPPT BUTTON_SELECT       // DIP switch 1: 0=MPPT 1=depends on DIP switch 2
@@ -48,7 +48,7 @@ float pwhist[3] = {1000., 1000., 1000.};
 static char line[4][21] = {"                    ", "                    ", "                    ", "                    "};
 
 boolean LED_ON_OFF = true;
-boolean MODE_MPPT, MODE_POT, MODE_SER;
+boolean MODE_PWM_MPPT, MODE_PWM_POT, MODE_PWM_SER;
 
 SDL_Arduino_INA3221 ina3221;
 
@@ -121,10 +121,10 @@ void loop()
 
 
 
-  //MODE_POT = true;
-  MODE_SER = true;
+  //MODE_PWM_POT = true;
+  MODE_PWM_SER = true;
 
-  if (MODE_POT)
+  if (MODE_PWM_POT)
   {
     // Set PWM duty cycle
 
@@ -136,7 +136,7 @@ void loop()
   }
 
 
-  if (MODE_SER)
+  if (MODE_PWM_SER)
   {
     char json[50];
     String str;
@@ -260,21 +260,21 @@ void loop()
 
     //Evaluate DIP switches
     uint8_t buttons = lcd.readButtons();
-    MODE_MPPT = false;
-    MODE_POT = false;
-    MODE_SER = false;
+    MODE_PWM_MPPT = false;
+    MODE_PWM_POT = false;
+    MODE_PWM_SER = false;
     if (!(buttons & BUTTON_PWM_MPPT)) // means MPPT yes
     {
     //Serial.println("MPPT");
-    MODE_MPPT = true;
+    MODE_PWM_MPPT = true;
     }
     else {
     if (buttons & BUTTON_PWM_POT_SERIAL)
     {
-      MODE_POT = true;
+      MODE_PWM_POT = true;
     }
     else {
-      MODE_SER = true;
+      MODE_PWM_SER = true;
     }
     }
 
@@ -297,7 +297,7 @@ void loop()
     //Serial.println("alive");
 
 
-    if (MODE_MPPT)
+    if (MODE_PWM_MPPT)
     {
       lcd.setCursor(0, 3);
       lcd.print("MPPT MODE");
@@ -305,7 +305,7 @@ void loop()
       requestedPulseWidth = MAXPWM;
     }
 
-    if (MODE_POT)
+    if (MODE_PWM_POT)
     {
       // Set PWM duty cycle
       lcd.setCursor(0, 3);
@@ -316,7 +316,7 @@ void loop()
       requestedPulseWidth = sensorValue / 4;
     }
 
-    if (MODE_SER)
+    if (MODE_PWM_SER)
     {
       char json[50];
       String str;
@@ -433,7 +433,7 @@ void printValues(  float bv[], float cmA[], float pw[]) {
 
   float eff = pw[CHANNEL_BATTERY] / pw[CHANNEL_SOLAR];
 
-  if (LCD || MODE_SERIAL)  {
+  if (LCD || SERIAL_COMM)  {
     int i;
     i = CHANNEL_SOLAR;
     dtostrf(bv[i], 5, 2, bvstr);
@@ -476,13 +476,14 @@ void printValues(  float bv[], float cmA[], float pw[]) {
 
   }
 
-  if (MODE_SERIAL)
+  if (SERIAL_COMM)
     printINA(count, line[0], line[1], eff, pulseWidth, targetPulseWidth);
 }
 
 void printINA(int count, char* line1, char* line2, float eff, float pulseWidth, float targetPulseWidth)
 {
 
+  Serial.print("{\"type\":\"data\",\"line\":\"");
   Serial.print(count);
   Serial.print(" ");
   Serial.print(line1);
@@ -494,6 +495,7 @@ void printINA(int count, char* line1, char* line2, float eff, float pulseWidth, 
   Serial.print(pulseWidth);
   Serial.print(" ");
   Serial.print(targetPulseWidth);
+  Serial.print("\"}");
   Serial.println();
 
 }
