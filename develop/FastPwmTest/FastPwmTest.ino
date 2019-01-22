@@ -1,6 +1,8 @@
 /**********************************************************
                 Fast PWM Test
 
+// works on Leonardo with ATmega32u4
+
   Demostrates the generation of high speed PWM
   using timers 1 and 4
   There are two pieces of code:
