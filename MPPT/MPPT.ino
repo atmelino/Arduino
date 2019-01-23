@@ -334,10 +334,6 @@ void setPWM(float batteryvoltage)
       pulseWidth--;
     pwmWrite(PWM_OUT, pulseWidth);
   }
-
-  //pulseWidth = requestedPulseWidth;
-  pwmWrite(PWM_OUT, pulseWidth);
-
 }
 
 
@@ -386,24 +382,19 @@ void printValues(  float bv[], float cmA[], float pw[]) {
     memcpy(line[2], pwmstr, 5);
     line[2][5] = ' ';
     memcpy(&line[2][6], tapwmstr, 6);
+
+    if (LCD)
+    {
+      lcd.setCursor(0, 0);
+      lcd.print(line[0]);  // solar panel
+      lcd.setCursor(0, 1);
+      lcd.print(line[1]);  // MPPT output
+      lcd.setCursor(0, 2);
+      lcd.print(line[2]);  // buck converter output and battery input
+    }
+    if (SERIAL_COMM)
+      printINA(count, line[0], line[1], eff, pulseWidth, requestedPulseWidth);
   }
-
-
-  if (LCD)
-  {
-    lcd.setCursor(0, 0);
-    lcd.print(line[0]);  // solar panel
-
-    lcd.setCursor(0, 1);
-    lcd.print(line[1]);  // MPPT output
-
-    lcd.setCursor(0, 2);
-    lcd.print(line[2]);  // buck converter output and battery input
-
-  }
-
-  if (SERIAL_COMM)
-    printINA(count, line[0], line[1], eff, pulseWidth, requestedPulseWidth);
 }
 
 void printINA(int count, char* line1, char* line2, float eff, float pulseWidth, float requestedPulseWidth)
