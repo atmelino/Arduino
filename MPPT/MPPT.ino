@@ -8,6 +8,9 @@
 
 Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 
+// during development
+#define DEVELOP
+
 // Options
 #define BLINK 0
 #define SERIAL_COMM 1
@@ -19,8 +22,13 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define BUTTON_UNUSED BUTTON_UP  // DIP switch 4
 #define MAXPWM 210
 #define MAXVOLTAGE 8.4
+#if defined(DEVELOP)
+#define PI_ON_VOLTAGE 7.2
+#define PI_OFF_VOLTAGE 7.0
+#else
 #define PI_ON_VOLTAGE 7.8
 #define PI_OFF_VOLTAGE 7.6
+#endif
 #define SHUTDOWNVOLTAGE 7.5
 #define SWVERSION "SW 2019-01-21 20:37"
 
@@ -69,9 +77,8 @@ void setup()
   // except for potentiometer reading
   pinMode(potentiometerPin, INPUT);
 
-
-  Serial.begin(9600);
   //Serial.begin(112500);
+  Serial.begin(9600);
   Serial.setTimeout(500);  // only need to be set once
   Serial.println("no  Volt     mA   mW     Volt     mA   mW   eff    PWM   target");
 
@@ -119,22 +126,19 @@ void loop()
   lcd.setCursor(10, 3);
   lcd.print("batt ok ");
 
-
-
   //MODE_PWM_POT = true;
   MODE_PWM_SER = true;
 
   if (MODE_PWM_POT)
   {
     // Set PWM duty cycle
-
+    lcd.setCursor(0, 3);
+    lcd.print("POT MODE ");
     // read potentiometer value
     sensorValue = analogRead(potentiometerPin);
     //Serial.println(sensorValue);
     requestedPulseWidth = sensorValue / 4;
-    //Serial.println(requestedPulseWidth);
   }
-
 
   if (MODE_PWM_SER)
   {
@@ -144,48 +148,35 @@ void loop()
     lcd.print("SER MODE ");
     // send data only when you receive data:
     while (Serial.available() > 0) {
-      // read the incoming byte:
-      //incomingByte = Serial.read();
-      // say what you got:
-      //Serial.print("I received: ");
-      //Serial.println(incomingByte);
-
-
       str = Serial.readStringUntil('\n');
       Serial.println(str);
     }
     str.toCharArray(json, 50);
     JsonObject& root = jsonBuffer.parseObject(json);
 
-
     if (!root.success()) {
       //Serial.println("parseObject() failed");
     }
     else
     {
-      //{"PWM":213}
       int pwmint = root["PWM"];
       Serial.println(pwmint);
       incomingByte = (byte)pwmint;
     }
-
-
     requestedPulseWidth = incomingByte;
   }
 
 
+  //targetPulseWidth=setPWM( pulseWidth,  requestedPulseWidth, bv[CHANNEL_BATTERY]);
+  setPWM(bv[CHANNEL_BATTERY]);
 
-  targetPulseWidth = requestedPulseWidth;
-  //Serial.println(targetPulseWidth);
 
-  pulseWidth = targetPulseWidth;
-  pwmWrite(PWM_OUT, pulseWidth);
-
-  if (bv[CHANNEL_BATTERY] >= 7.0)
-  {
+  // Is battery voltage high enough to power Pi?
+  if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE) {
     digitalWrite(RELAY_PI_PIN, HIGH);
     digitalWrite(RELAY_BATT_PIN, HIGH);
-  } else {
+  }
+  if (bv[CHANNEL_BATTERY] < PI_OFF_VOLTAGE) {
     digitalWrite(RELAY_PI_PIN, LOW);
     digitalWrite(RELAY_BATT_PIN, LOW);
   }
@@ -220,14 +211,6 @@ void loop()
     lcd.setCursor(10, 3);
     lcd.print("batt low");
     digitalWrite(RELAY_BATT_PIN, LOW);
-    }
-
-    // Is battery voltage high enough to power Pi?
-    if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE) {
-    digitalWrite(RELAY_PI_PIN, HIGH);
-    }
-    if (bv[CHANNEL_BATTERY] < PI_OFF_VOLTAGE) {
-    digitalWrite(RELAY_PI_PIN, LOW);
     }
 
     // check if pi is running
@@ -305,86 +288,6 @@ void loop()
       requestedPulseWidth = MAXPWM;
     }
 
-    if (MODE_PWM_POT)
-    {
-      // Set PWM duty cycle
-      lcd.setCursor(0, 3);
-      lcd.print("POT MODE ");
-      // read potentiometer value
-      sensorValue = analogRead(potentiometerPin);
-      //Serial.println(sensorValue);
-      requestedPulseWidth = sensorValue / 4;
-    }
-
-    if (MODE_PWM_SER)
-    {
-      char json[50];
-      String str;
-      lcd.setCursor(0, 3);
-      lcd.print("SER MODE ");
-      // send data only when you receive data:
-      while (Serial.available() > 0) {
-        // read the incoming byte:
-        //incomingByte = Serial.read();
-        // say what you got:
-        //Serial.print("I received: ");
-        //Serial.println(incomingByte);
-
-
-        str = Serial.readStringUntil('\n');
-        Serial.println(str);
-      }
-      str.toCharArray(json, 50);
-      JsonObject& root = jsonBuffer.parseObject(json);
-
-
-      if (!root.success()) {
-        //Serial.println("parseObject() failed");
-      }
-      else
-      {
-        //{"PWM":213}
-        int pwmint = root["PWM"];
-        Serial.println(pwmint);
-        incomingByte = (byte)pwmint;
-      }
-
-
-      requestedPulseWidth = incomingByte;
-    }
-
-    //Serial.println(requestedPulseWidth);
-    if ( requestedPulseWidth > 244)
-      requestedPulseWidth = 244;
-
-    // calculate target PWM
-    if (bv[CHANNEL_BATTERY] < MAXVOLTAGE)
-      targetPulseWidth = requestedPulseWidth;
-    if (bv[CHANNEL_BATTERY] >= MAXVOLTAGE)
-      targetPulseWidth = 0;
-    //Serial.print("computed targetPulseWidth: ");
-    //Serial.println(targetPulseWidth);
-    }
-
-
-    // Change PWM if required
-    if (pulseWidth < targetPulseWidth ) {
-    if (abs(pulseWidth - targetPulseWidth) > 10)
-      pulseWidth += 10;
-    else
-      pulseWidth++;
-    pwmWrite(PWM_OUT, pulseWidth);
-    }
-    if (pulseWidth > targetPulseWidth ) {
-    if (abs(pulseWidth - targetPulseWidth) > 10)
-      pulseWidth -= 5;
-    else
-      pulseWidth--;
-    pwmWrite(PWM_OUT, pulseWidth);
-    }
-
-
-
 
     printValues(bv, cmA, pw) ;
     //Serial.println("after printValues()");
@@ -396,24 +299,47 @@ void loop()
     lcd.print(SWVERSION);
     }
 
-    // yellow LED and loop period
-    if (bv[CHANNEL_BATTERY] <= 7.5)
-    ontime = 10;
-    if (bv[CHANNEL_BATTERY] > 7.5 && bv[CHANNEL_BATTERY] <= 8.35)
-    ontime = 2000 * (bv[CHANNEL_BATTERY] - 7.5);
-    if (bv[CHANNEL_BATTERY] > 8.35)
-    ontime = 1950;
-    offtime = 2000 - ontime;
-    //Serial.print(ontime);
-    //Serial.print(" ");
-    //Serial.println(offtime);
-    digitalWrite(CHARGE_LED, HIGH);
-    delay(ontime);
-    digitalWrite(CHARGE_LED, LOW);
-    delay(offtime);
   */
 
 } // end loop
+
+//byte setPWM(byte pulseWidth,  byte requestedPulseWidth, float batteryvoltage)
+void setPWM(float batteryvoltage)
+{
+  // accesses global variables pulseWidth, requestedPulseWidth, targetPulseWidth
+  //Serial.println(requestedPulseWidth);
+  if ( requestedPulseWidth > 244)
+    requestedPulseWidth = 244;
+
+  // calculate target PWM
+  if (batteryvoltage < MAXVOLTAGE)
+    targetPulseWidth = requestedPulseWidth;
+  if (batteryvoltage >= MAXVOLTAGE)
+    targetPulseWidth = 0;
+  //Serial.print("computed targetPulseWidth: ");
+  //Serial.println(targetPulseWidth);
+
+  // Change PWM if required
+  if (pulseWidth < targetPulseWidth ) {
+    if (abs(pulseWidth - targetPulseWidth) > 10)
+      pulseWidth += 10;
+    else
+      pulseWidth++;
+    pwmWrite(PWM_OUT, pulseWidth);
+  }
+  if (pulseWidth > targetPulseWidth ) {
+    if (abs(pulseWidth - targetPulseWidth) > 10)
+      pulseWidth -= 5;
+    else
+      pulseWidth--;
+    pwmWrite(PWM_OUT, pulseWidth);
+  }
+
+  //pulseWidth = requestedPulseWidth;
+  pwmWrite(PWM_OUT, pulseWidth);
+
+}
+
 
 void powerCyclePi() {
   delay(1000);
@@ -456,7 +382,7 @@ void printValues(  float bv[], float cmA[], float pw[]) {
     memcpy(&line[1][13], pwstr, 6);
 
     dtostrf(pulseWidth, 5, 2, pwmstr);
-    dtostrf(targetPulseWidth, 5, 2, tapwmstr);
+    dtostrf(requestedPulseWidth, 5, 2, tapwmstr);
     memcpy(line[2], pwmstr, 5);
     line[2][5] = ' ';
     memcpy(&line[2][6], tapwmstr, 6);
@@ -477,10 +403,10 @@ void printValues(  float bv[], float cmA[], float pw[]) {
   }
 
   if (SERIAL_COMM)
-    printINA(count, line[0], line[1], eff, pulseWidth, targetPulseWidth);
+    printINA(count, line[0], line[1], eff, pulseWidth, requestedPulseWidth);
 }
 
-void printINA(int count, char* line1, char* line2, float eff, float pulseWidth, float targetPulseWidth)
+void printINA(int count, char* line1, char* line2, float eff, float pulseWidth, float requestedPulseWidth)
 {
 
   Serial.print("{\"type\":\"data\",\"line\":\"");
@@ -494,7 +420,7 @@ void printINA(int count, char* line1, char* line2, float eff, float pulseWidth, 
   Serial.print(" ");
   Serial.print(pulseWidth);
   Serial.print(" ");
-  Serial.print(targetPulseWidth);
+  Serial.print(requestedPulseWidth);
   Serial.print("\"}");
   Serial.println();
 
