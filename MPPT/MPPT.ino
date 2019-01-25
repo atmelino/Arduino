@@ -16,9 +16,9 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define SERIAL_COMM 1
 #define LCD 1
 #define SLEEPMODE 0
-#define BUTTON_PWM_MPPT BUTTON_SELECT       // DIP switch 1: 0=MPPT 1=depends on DIP switch 2
-#define BUTTON_PWM_POT_SERIAL BUTTON_RIGHT  // DIP switch 2: 1=POT 0=SERIAL
-#define BUTTON_SW_VERSION BUTTON_DOWN  // DIP switch 3
+#define BUTTON_CONFIG BUTTON_SELECT  // DIP switch 1
+#define BUTTON_PWM_MPPT BUTTON_RIGHT       // DIP switch 2: 0=MPPT 1=depends on DIP switch 3
+#define BUTTON_PWM_POT_SERIAL BUTTON_DOWN  // DIP switch 3: 1=POT 0=SERIAL
 #define BUTTON_UNUSED BUTTON_UP  // DIP switch 4
 #define MAXPWM 210
 #define MAXVOLTAGE 8.4
@@ -30,7 +30,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define PI_OFF_VOLTAGE 7.6
 #endif
 #define SHUTDOWNVOLTAGE 7.5
-#define SWVERSION "SW 2019-01-21 20:37"
+#define SWVERSION "SW 2019-01-24 23:24"
 
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
@@ -40,7 +40,6 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define CHARGE_LED (12)
 #define ARDUINO_LED 13;      // pin for the built-in LED
 
-
 // These #defines make it easy to set the backlight color
 #define WHITE 0x7
 
@@ -49,12 +48,23 @@ int sensorValue = 0;  // variable to store the value coming from the sensor
 int incomingByte = 200;   // for incoming serial data
 
 int32_t frequency = 80000; //frequency (in Hz)
-byte pulseWidth = 0;
+#if defined(DEVELOP)
+byte pulseWidth = 200;
+byte requestedPulseWidth = 200;
+#else
+byte pulseWidth = 128;
 byte requestedPulseWidth = 130;
+#endif
 byte targetPulseWidth;
 float pwhist[3] = {1000., 1000., 1000.};
 static char line[4][21] = {"                    ", "                    ", "                    ", "                    "};
-
+uint8_t dipswitch;
+static char bvstr[10];
+static char cmAstr[10];
+static char pwstr[10];
+static char pwmstr[10];
+static char tapwmstr[10];
+static char IPAdress[16] = "unknown";
 boolean LED_ON_OFF = true;
 boolean MODE_PWM_MPPT, MODE_PWM_POT, MODE_PWM_SER;
 
@@ -63,8 +73,6 @@ SDL_Arduino_INA3221 ina3221;
 // the three channels of the INA3221
 #define CHANNEL_SOLAR 2 // solar panel on INA channel 3, array position 2
 #define CHANNEL_BATTERY 1 // lipo battery on INA channel 2, array position 1
-
-
 
 int count = 0;
 
@@ -92,7 +100,6 @@ void setup()
   digitalWrite(PWM_ENABLE_PIN, HIGH);
 
   // PWM
-  pulseWidth = 128;
   InitTimersSafe();
   bool success = SetPinFrequencySafe(PWM_OUT, frequency);
 
@@ -112,8 +119,44 @@ void loop()
   float powerConsumption;
   int ontime, offtime;
   StaticJsonBuffer<200> jsonBuffer;
-
+  char json[50];
+  String str;
   count++;
+
+  //read message from Pi
+  while (Serial.available() > 0) {
+    str = Serial.readStringUntil('\n');
+    Serial.println(str);
+  }
+  str.toCharArray(json, 50);
+  JsonObject& root = jsonBuffer.parseObject(json);
+
+  if (!root.success()) {
+    //Serial.println("parseObject() failed");
+  }
+  else
+  {
+    if (root.containsKey("PWM")) {
+      //Serial.println("PWM found");
+      int pwmint = root["PWM"];
+      Serial.println(pwmint);
+      incomingByte = (byte)pwmint;
+      requestedPulseWidth = incomingByte;
+    }
+    if (root.containsKey("IP")) {
+      Serial.println("{\"msg\":\"IP found\"}");
+      const char* IPaddress = root["IP"];
+      //IPAddress = root["IP"];
+      Serial.print("{\"msg\":\"");
+      Serial.print(IPaddress);
+      Serial.print("\"}");
+      Serial.println();
+      for (int i = 0; i < 15; i++) {
+        IPAdress[i] = IPaddress[i];
+      }
+    }
+  }
+
 
   for (int i = 0; i < 3; i++) {
     bv[i] = ina3221.getBusVoltage_V(i + 1);
@@ -125,6 +168,9 @@ void loop()
 
   lcd.setCursor(10, 3);
   lcd.print("batt ok ");
+
+  //Evaluate DIP switches
+  dipswitch = lcd.readButtons();
 
   //MODE_PWM_POT = true;
   MODE_PWM_SER = true;
@@ -142,28 +188,8 @@ void loop()
 
   if (MODE_PWM_SER)
   {
-    char json[50];
-    String str;
     lcd.setCursor(0, 3);
     lcd.print("SER MODE ");
-    // send data only when you receive data:
-    while (Serial.available() > 0) {
-      str = Serial.readStringUntil('\n');
-      Serial.println(str);
-    }
-    str.toCharArray(json, 50);
-    JsonObject& root = jsonBuffer.parseObject(json);
-
-    if (!root.success()) {
-      //Serial.println("parseObject() failed");
-    }
-    else
-    {
-      int pwmint = root["PWM"];
-      Serial.println(pwmint);
-      incomingByte = (byte)pwmint;
-    }
-    requestedPulseWidth = incomingByte;
   }
 
 
@@ -171,6 +197,10 @@ void loop()
   setPWM(bv[CHANNEL_BATTERY]);
 
 
+#if defined(DEVELOP)
+  digitalWrite(RELAY_PI_PIN, HIGH);
+  digitalWrite(RELAY_BATT_PIN, HIGH);
+#else
   // Is battery voltage high enough to power Pi?
   if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE) {
     digitalWrite(RELAY_PI_PIN, HIGH);
@@ -180,8 +210,24 @@ void loop()
     digitalWrite(RELAY_PI_PIN, LOW);
     digitalWrite(RELAY_BATT_PIN, LOW);
   }
+#endif
 
-  printValues(bv, cmA, pw) ;
+
+  if (dipswitch & BUTTON_CONFIG)
+  {
+    Serial.println("{\"type\":\"IP\"}");
+    lcd.setCursor(0, 0);
+    lcd.print(SWVERSION);
+    lcd.setCursor(0, 1);
+    lcd.print("IP ");
+    lcd.setCursor(3, 1);
+    lcd.print(IPAdress);
+  } else {
+    printValuesLCD(  bv, cmA,  pw);
+  }
+  printValuesSerial(  bv, cmA,  pw);
+
+  //printValues(bv, cmA, pw) ;
 
 
   // yellow LED and loop period
@@ -242,17 +288,17 @@ void loop()
     }
 
     //Evaluate DIP switches
-    uint8_t buttons = lcd.readButtons();
+    uint8_t dipswitch = lcd.readdipswitch();
     MODE_PWM_MPPT = false;
     MODE_PWM_POT = false;
     MODE_PWM_SER = false;
-    if (!(buttons & BUTTON_PWM_MPPT)) // means MPPT yes
+    if (!(dipswitch & BUTTON_PWM_MPPT)) // means MPPT yes
     {
     //Serial.println("MPPT");
     MODE_PWM_MPPT = true;
     }
     else {
-    if (buttons & BUTTON_PWM_POT_SERIAL)
+    if (dipswitch & BUTTON_PWM_POT_SERIAL)
     {
       MODE_PWM_POT = true;
     }
@@ -289,15 +335,6 @@ void loop()
     }
 
 
-    printValues(bv, cmA, pw) ;
-    //Serial.println("after printValues()");
-
-
-    if (buttons & BUTTON_SW_VERSION)
-    {
-    lcd.setCursor(0, 1);
-    lcd.print(SWVERSION);
-    }
 
   */
 
@@ -344,68 +381,55 @@ void powerCyclePi() {
   digitalWrite(RELAY_PI_PIN, HIGH);
 }
 
+void makeLines( float bv[], float cmA[], float pw[])  {
+  int i;
+  i = CHANNEL_SOLAR;
+  dtostrf(bv[i], 5, 2, bvstr);
+  dtostrf(cmA[i], 7, 2, cmAstr);
+  dtostrf(pw[i], 7, 2, pwstr);
+  memcpy(line[0], bvstr, 5);
+  line[0][5] = ' ';
+  memcpy(&line[0][6], cmAstr, 6);
+  line[0][12] = ' ';
+  memcpy(&line[0][13], pwstr, 6);
 
+  i = CHANNEL_BATTERY;
+  dtostrf(bv[i], 5, 2, bvstr);
+  dtostrf(cmA[i], 7, 2, cmAstr);
+  dtostrf(pw[i], 7, 2, pwstr);
+  memcpy(line[1], bvstr, 5);
+  line[1][5] = ' ';
+  memcpy(&line[1][6], cmAstr, 6);
+  line[1][12] = ' ';
+  memcpy(&line[1][13], pwstr, 6);
 
-void printValues(  float bv[], float cmA[], float pw[]) {
-  static char bvstr[10];
-  static char cmAstr[10];
-  static char pwstr[10];
-  static char pwmstr[10];
-  static char tapwmstr[10];
-
-  float eff = pw[CHANNEL_BATTERY] / pw[CHANNEL_SOLAR];
-
-  if (LCD || SERIAL_COMM)  {
-    int i;
-    i = CHANNEL_SOLAR;
-    dtostrf(bv[i], 5, 2, bvstr);
-    dtostrf(cmA[i], 7, 2, cmAstr);
-    dtostrf(pw[i], 7, 2, pwstr);
-    memcpy(line[0], bvstr, 5);
-    line[0][5] = ' ';
-    memcpy(&line[0][6], cmAstr, 6);
-    line[0][12] = ' ';
-    memcpy(&line[0][13], pwstr, 6);
-
-    i = CHANNEL_BATTERY;
-    dtostrf(bv[i], 5, 2, bvstr);
-    dtostrf(cmA[i], 7, 2, cmAstr);
-    dtostrf(pw[i], 7, 2, pwstr);
-    memcpy(line[1], bvstr, 5);
-    line[1][5] = ' ';
-    memcpy(&line[1][6], cmAstr, 6);
-    line[1][12] = ' ';
-    memcpy(&line[1][13], pwstr, 6);
-
-    dtostrf(pulseWidth, 5, 2, pwmstr);
-    dtostrf(requestedPulseWidth, 5, 2, tapwmstr);
-    memcpy(line[2], pwmstr, 5);
-    line[2][5] = ' ';
-    memcpy(&line[2][6], tapwmstr, 6);
-
-    if (LCD)
-    {
-      lcd.setCursor(0, 0);
-      lcd.print(line[0]);  // solar panel
-      lcd.setCursor(0, 1);
-      lcd.print(line[1]);  // MPPT output
-      lcd.setCursor(0, 2);
-      lcd.print(line[2]);  // buck converter output and battery input
-    }
-    if (SERIAL_COMM)
-      printINA(count, line[0], line[1], eff, pulseWidth, requestedPulseWidth);
-  }
+  dtostrf(pulseWidth, 5, 2, pwmstr);
+  dtostrf(requestedPulseWidth, 5, 2, tapwmstr);
+  memcpy(line[2], pwmstr, 5);
+  line[2][5] = ' ';
+  memcpy(&line[2][6], tapwmstr, 6);
 }
 
-void printINA(int count, char* line1, char* line2, float eff, float pulseWidth, float requestedPulseWidth)
-{
+void printValuesLCD(  float bv[], float cmA[], float pw[]) {
+  makeLines( bv, cmA,  pw) ;
+  lcd.setCursor(0, 0);
+  lcd.print(line[0]);  // solar panel
+  lcd.setCursor(0, 1);
+  lcd.print(line[1]);  // MPPT output
+  lcd.setCursor(0, 2);
+  lcd.print(line[2]);  // buck converter output and battery input
 
+}
+
+void printValuesSerial(  float bv[], float cmA[], float pw[]) {
+  float eff = pw[CHANNEL_BATTERY] / pw[CHANNEL_SOLAR];
+  makeLines( bv, cmA,  pw) ;
   Serial.print("{\"type\":\"data\",\"line\":\"");
   Serial.print(count);
   Serial.print(" ");
-  Serial.print(line1);
+  Serial.print(line[0]);
   Serial.print(" ");
-  Serial.print(line2);
+  Serial.print(line[1]);
   Serial.print(" ");
   Serial.print(eff);
   Serial.print(" ");
@@ -414,7 +438,6 @@ void printINA(int count, char* line1, char* line2, float eff, float pulseWidth, 
   Serial.print(requestedPulseWidth);
   Serial.print("\"}");
   Serial.println();
-
 }
 
 
