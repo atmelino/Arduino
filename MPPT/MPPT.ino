@@ -49,7 +49,7 @@ int incomingByte = 200;   // for incoming serial data
 
 int32_t frequency = 80000; //frequency (in Hz)
 #if defined(DEVELOP)
-byte pulseWidth = 200;
+byte pulseWidth = 190;
 byte requestedPulseWidth = 200;
 #else
 byte pulseWidth = 128;
