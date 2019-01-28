@@ -227,9 +227,6 @@ void loop()
   }
   printValuesSerial(  bv, cmA,  pw);
 
-  //printValues(bv, cmA, pw) ;
-
-
   // yellow LED and loop period
   if (bv[CHANNEL_BATTERY] <= 7.5)
     ontime = 10;
