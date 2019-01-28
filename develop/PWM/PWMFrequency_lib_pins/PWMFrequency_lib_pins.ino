@@ -24,15 +24,15 @@ uint16_t testPrescaleTimerValues2[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 10
 
 void loop() {
 
-
+  testFrequency(5, 1);
+  testFrequency(6, 1);
+  testFrequency(9, 1);
+  testFrequency(10, 1);
   testFrequency(11, 1);
-  delay (1000); // 
-
+  testFrequency(13, 1);
   while (true)
   {
-    //The following can only be tested on an oscilliscope
-    //testFrequency(11, testPrescaleTimerValues1, sizeof(testPrescaleTimerValues1) );
-    //testFrequency(13, testPrescaleTimerValues2, sizeof(testPrescaleTimerValues2) );
+    delay (1000); //
   }
 }
 
@@ -60,36 +60,6 @@ void testFrequency(byte pinNumber, uint16_t prescalValue) {
   delay (1000); // RUN THE TEST
   Serial.print(prescalValue);
   Serial.print(" ");
-  Serial.println();
-
-}
-
-
-void testFrequency(byte pinNumber, uint16_t *prescalValues, int size) {
-
-  Serial.println();
-  Serial.print("Testing PIN ");
-  Serial.println(pinNumber);
-
-  // setup the PIN
-  pinMode(pinNumber, OUTPUT);
-  byte elements = size / sizeof(uint16_t);
-  Serial.print("Prescale Value = ");
-  for ( int i = 0; i < elements; i++ ) {
-    // set the prescale, and PWM output
-    setPWMPrescaler(pinNumber, prescalValues[i]);
-
-    // settle
-    delay (10);
-
-    // set the PIN
-    analogWrite(pinNumber, 128);
-
-    delay (1000); // RUN THE TEST
-    Serial.print(prescalValues[i]);
-    Serial.print(" ");
-
-  }
   Serial.println();
 
 }
