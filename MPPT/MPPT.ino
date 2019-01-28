@@ -16,10 +16,10 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define SERIAL_COMM 1
 #define LCD 1
 #define SLEEPMODE 0
-#define BUTTON_CONFIG BUTTON_SELECT  // DIP switch 1
-#define BUTTON_PWM_MPPT BUTTON_RIGHT       // DIP switch 2: 0=MPPT 1=depends on DIP switch 3
-#define BUTTON_PWM_POT_SERIAL BUTTON_DOWN  // DIP switch 3: 1=POT 0=SERIAL
-#define BUTTON_UNUSED BUTTON_UP  // DIP switch 4
+#define BUTTON_CONFIG     BUTTON_SELECT // DIP switch 1
+#define BUTTON_PWM_MPPT   BUTTON_RIGHT  // DIP switch 2: 1=MPPT 
+#define BUTTON_PWM_POT    BUTTON_DOWN   // DIP switch 3: 1=POT 
+#define BUTTON_PWM_SERIAL BUTTON_UP     // DIP switch 4: 1=SERIAL
 #define MAXPWM 210
 #define MAXVOLTAGE 8.4
 #if defined(DEVELOP)
@@ -30,7 +30,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define PI_OFF_VOLTAGE 7.6
 #endif
 #define SHUTDOWNVOLTAGE 7.5
-#define SWVERSION "SW 2019-01-24 23:24"
+#define SWVERSION "SW 2019-01-28 01:56"
 
 // Wiring:
 #define PWM_OUT 3            // PWM signal pin 
@@ -157,7 +157,7 @@ void loop()
     }
   }
 
-
+  // acquire voltages and currents
   for (int i = 0; i < 3; i++) {
     bv[i] = ina3221.getBusVoltage_V(i + 1);
     sv[i] = ina3221.getShuntVoltage_mV(i + 1);
@@ -166,18 +166,43 @@ void loop()
     pw[i] = bv[i] * cmA[i];
   }
 
-  lcd.setCursor(10, 3);
-  lcd.print("batt ok ");
+  // Is battery voltage high enough to power Arduino?
+  if (bv[CHANNEL_BATTERY] > SHUTDOWNVOLTAGE) {
+    digitalWrite(RELAY_BATT_PIN, HIGH);
+  } else {
+    digitalWrite(RELAY_BATT_PIN, LOW);
+  }
 
+  // Is battery voltage high enough to power Pi?
+  if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE) {
+    digitalWrite(RELAY_PI_PIN, HIGH);
+    // Pi should be running. If not, powercycle
+
+  }
+  if (bv[CHANNEL_BATTERY] < PI_OFF_VOLTAGE) {
+    digitalWrite(RELAY_PI_PIN, LOW);
+  }
+
+  // PWM setting: potentiometer, MPPT, or from serial port request?
   //Evaluate DIP switches
   dipswitch = lcd.readButtons();
 
-  //MODE_PWM_POT = true;
-  MODE_PWM_SER = true;
-
-  if (MODE_PWM_POT)
+  //Evaluate DIP switches
+  MODE_PWM_MPPT = false;
+  MODE_PWM_POT = false;
+  MODE_PWM_SER = false;
+  if (dipswitch & BUTTON_PWM_MPPT) // means MPPT yes
   {
-    // Set PWM duty cycle
+    MODE_PWM_MPPT = true;
+    //Serial.println("MPPT");
+    lcd.setCursor(0, 3);
+    lcd.print("MPPT MODE");
+    //requestedPulseWidth = MAXPWM;
+  }
+  if (dipswitch & BUTTON_PWM_POT) // means POT yes
+  {
+    MODE_PWM_POT = true;
+    //Serial.println("POT");
     lcd.setCursor(0, 3);
     lcd.print("POT MODE ");
     // read potentiometer value
@@ -185,33 +210,16 @@ void loop()
     //Serial.println(sensorValue);
     requestedPulseWidth = sensorValue / 4;
   }
-
-  if (MODE_PWM_SER)
+  if (dipswitch & BUTTON_PWM_SERIAL) // means SERIAL yes
   {
+    MODE_PWM_SER = true;
+    //Serial.println("Serial");
     lcd.setCursor(0, 3);
     lcd.print("SER MODE ");
   }
 
-
   //targetPulseWidth=setPWM( pulseWidth,  requestedPulseWidth, bv[CHANNEL_BATTERY]);
   setPWM(bv[CHANNEL_BATTERY]);
-
-
-#if defined(DEVELOP)
-  digitalWrite(RELAY_PI_PIN, HIGH);
-  digitalWrite(RELAY_BATT_PIN, HIGH);
-#else
-  // Is battery voltage high enough to power Pi?
-  if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE) {
-    digitalWrite(RELAY_PI_PIN, HIGH);
-    digitalWrite(RELAY_BATT_PIN, HIGH);
-  }
-  if (bv[CHANNEL_BATTERY] < PI_OFF_VOLTAGE) {
-    digitalWrite(RELAY_PI_PIN, LOW);
-    digitalWrite(RELAY_BATT_PIN, LOW);
-  }
-#endif
-
 
   if (dipswitch & BUTTON_CONFIG)
   {
@@ -235,105 +243,10 @@ void loop()
   if (bv[CHANNEL_BATTERY] > 8.35)
     ontime = 1950;
   offtime = 2000 - ontime;
-  //Serial.print(ontime);
-  //Serial.print(" ");
-  //Serial.println(offtime);
   digitalWrite(CHARGE_LED, HIGH);
   delay(ontime);
   digitalWrite(CHARGE_LED, LOW);
   delay(offtime);
-
-
-  /* from 2016 version
-    // Is battery voltage high enough to power Arduino?
-    if (bv[CHANNEL_BATTERY] > SHUTDOWNVOLTAGE) {
-    lcd.setCursor(10, 3);
-    lcd.print("batt ok ");
-    digitalWrite(RELAY_BATT_PIN, HIGH);
-    } else {
-    lcd.setCursor(10, 3);
-    lcd.print("batt low");
-    digitalWrite(RELAY_BATT_PIN, LOW);
-    }
-
-    // check if pi is running
-    pwhist[0] = pwhist[1];
-    pwhist[1] = pwhist[2];
-    pwhist[2] = pw[CHANNEL_SOLAR] + pw[CHANNEL_BATTERY];
-    //Serial.print(pwhist[0]);
-    //Serial.print(" ");
-    //Serial.print(pwhist[1]);
-    //Serial.print(" ");
-    //Serial.print(pwhist[2]);
-    //Serial.print(" ");
-
-    // if 3 consecutive measurements below 900mW
-    if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE && pwhist[0] < 900.0 && pwhist[1] < 900.0 && pwhist[2] < 900.0 )
-    {
-    powerCyclePi();
-    //lcd.setCursor(2, 17);
-    //lcd.print("C+");
-    line[2][16] = 'C';
-    line[2][17] = '+';
-    }
-    else
-    {
-    //lcd.setCursor(2, 17);
-    //lcd.print("C-");
-    line[2][16] = 'C';
-    line[2][17] = '-';
-    }
-
-    //Evaluate DIP switches
-    uint8_t dipswitch = lcd.readdipswitch();
-    MODE_PWM_MPPT = false;
-    MODE_PWM_POT = false;
-    MODE_PWM_SER = false;
-    if (!(dipswitch & BUTTON_PWM_MPPT)) // means MPPT yes
-    {
-    //Serial.println("MPPT");
-    MODE_PWM_MPPT = true;
-    }
-    else {
-    if (dipswitch & BUTTON_PWM_POT_SERIAL)
-    {
-      MODE_PWM_POT = true;
-    }
-    else {
-      MODE_PWM_SER = true;
-    }
-    }
-
-    // Is sun shining?
-    if (SLEEPMODE && bv[CHANNEL_SOLAR] < 9.5) {
-    // No: go to sleep at night
-    lcd.setCursor(0, 3);
-    lcd.print("SLEEP ON ");
-
-    int sleepMS = Watchdog.sleep();
-
-    // first command after wakeup
-    lcd.setCursor(0, 3);
-    lcd.print("SLEEP OFF");
-
-
-    }
-    else {
-    // Yes: charge battery
-    //Serial.println("alive");
-
-
-    if (MODE_PWM_MPPT)
-    {
-      lcd.setCursor(0, 3);
-      lcd.print("MPPT MODE");
-
-      requestedPulseWidth = MAXPWM;
-    }
-
-
-
-  */
 
 } // end loop
 
@@ -452,5 +365,62 @@ void charcpy(char* from, char* to, int num)
   int i;
   for (i = 0; i < num; i++)
     to[i] = from[i];
-
 }
+
+/* from 2016 version
+
+  // check if pi is running
+  pwhist[0] = pwhist[1];
+  pwhist[1] = pwhist[2];
+  pwhist[2] = pw[CHANNEL_SOLAR] + pw[CHANNEL_BATTERY];
+  //Serial.print(pwhist[0]);
+  //Serial.print(" ");
+  //Serial.print(pwhist[1]);
+  //Serial.print(" ");
+  //Serial.print(pwhist[2]);
+  //Serial.print(" ");
+
+  // if 3 consecutive measurements below 900mW
+  if (bv[CHANNEL_BATTERY] > PI_ON_VOLTAGE && pwhist[0] < 900.0 && pwhist[1] < 900.0 && pwhist[2] < 900.0 )
+  {
+  powerCyclePi();
+  //lcd.setCursor(2, 17);
+  //lcd.print("C+");
+  line[2][16] = 'C';
+  line[2][17] = '+';
+  }
+  else
+  {
+  //lcd.setCursor(2, 17);
+  //lcd.print("C-");
+  line[2][16] = 'C';
+  line[2][17] = '-';
+  }
+
+
+  // Is sun shining?
+  if (SLEEPMODE && bv[CHANNEL_SOLAR] < 9.5) {
+  // No: go to sleep at night
+  lcd.setCursor(0, 3);
+  lcd.print("SLEEP ON ");
+
+  int sleepMS = Watchdog.sleep();
+
+  // first command after wakeup
+  lcd.setCursor(0, 3);
+  lcd.print("SLEEP OFF");
+
+
+  }
+  else {
+  // Yes: charge battery
+  //Serial.println("alive");
+
+*/
+
+//  lcd.setCursor(10, 3);
+//  lcd.print("batt ok ");
+
+//Serial.print(ontime);
+//Serial.print(" ");
+//Serial.println(offtime);
